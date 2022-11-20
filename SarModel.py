@@ -26,7 +26,7 @@ class SearchAndRescue(Model):
             self.schedule.add(a)
             self.grid.place_agent(a, (i*10, i*10))
 
-        pos_mp = (random.randrange(self.grid.width), random.randrange(self.grid.height))
+        pos_mp = (random.randrange((self.grid.width / 2), self.grid.width), random.randrange(self.grid.height/2, self.grid.height))
         missing_person = MissingPerson(999, pos_mp, self, 100)
         self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
