@@ -28,6 +28,7 @@ class SearchAndRescue(Model):
 
         pos_mp = (random.randrange(self.grid.width), random.randrange(self.grid.height))
         missing_person = MissingPerson(999, pos_mp, self, 100)
+        self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
 
         self.running = True
