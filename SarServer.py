@@ -37,7 +37,8 @@ params = {
                                           choices=['Parallel Sweep',
                                                    'Expanding Square',
                                                    'Sector Search',
-                                                   'Random Search'])
+                                                   'Random Search']),
+    "search_radius": UserSettableParameter("slider", "Search radius (in 10m)", 3, 1, 20, 1)
 }
 
 server = ModularServer(SearchAndRescue, [grid], "Sar Model", params)

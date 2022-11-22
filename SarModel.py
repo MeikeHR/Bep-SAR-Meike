@@ -11,10 +11,11 @@ from SarAgent import MissingPerson
 
 class SearchAndRescue(Model):
 
-    def __init__(self, width=30, height=20, search_pattern_slider='Parallel Sweep', num_units=1):
+    def __init__(self, width=30, height=20, search_pattern_slider='Parallel Sweep', num_units=1, search_radius=3):
         super().__init__()
 
         self.search_pattern_slider = search_pattern_slider
+        self.search_radius = search_radius
         self.num_units = num_units
 
         self.grid = SingleGrid(height, width, torus=False)
@@ -34,4 +35,5 @@ class SearchAndRescue(Model):
         self.running = True
 
     def step(self):
-        self.schedule.step()
+        if self.running:
+            self.schedule.step()
