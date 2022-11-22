@@ -74,4 +74,11 @@ class MissingPerson(Agent):
         new_position = random.choice(possible_steps)
         self.model.grid.move_agent(self, new_position)
 
+    def step(self):
+        # stroming
+        # eigenschappen
+        # tijd tot verdrinking
+        if self.stamina != 0:
+            self.move()
+
 
