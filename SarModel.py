@@ -11,7 +11,7 @@ from SarAgent import MissingPerson
 
 class SearchAndRescue(Model):
 
-    def __init__(self, width=30, height=20, search_pattern_slider='Parallel Sweep', num_units=1, search_radius=3):
+    def __init__(self, width=90, height=60, search_pattern_slider='Parallel Sweep', num_units=1, search_radius=3):
         super().__init__()
 
         self.search_pattern_slider = search_pattern_slider
@@ -27,7 +27,7 @@ class SearchAndRescue(Model):
             self.schedule.add(a)
             self.grid.place_agent(a, (i*10, i*10))
 
-        pos_mp = (random.randrange((self.grid.width / 2), self.grid.width), random.randrange(self.grid.height/2, self.grid.height))
+        pos_mp = (random.randrange(0, self.grid.width), random.randrange(0, self.grid.height/3))
         missing_person = MissingPerson(999, pos_mp, self, 100)
         self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
