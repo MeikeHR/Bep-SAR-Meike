@@ -12,13 +12,18 @@ def portrayal_method(agent):
         return
 
     if isinstance(agent, Unit):
-        portrayal = {"Shape": "arrowHead",
-                     "Filled": "true",
-                     "Layer": 1,
-                     "Color": "blue",
-                     "scale": 1,
-                     "heading_x": 1,
-                     "heading_y": 0}
+        # portrayal = {"Shape": "arrowHead",
+        #              "Filled": "true",
+        #              "Layer": 1,
+        #              "Color": "blue",
+        #              "scale": 1,
+        #              "heading_x": 1,
+        #              "heading_y": 0}
+        portrayal = {"Shape": "circle",
+                        "Filled": "true",
+                        "Layer": 1,
+                        "Color": "blue",
+                        "r": 1}
     else:
         # is the agent the missing person?
         portrayal = {"Shape": "circle",
