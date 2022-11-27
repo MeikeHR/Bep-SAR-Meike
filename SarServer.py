@@ -4,49 +4,61 @@ from mesa.visualization.UserParam import UserSettableParameter
 
 from SarModel import SearchAndRescue
 from SarAgent import Unit
+from SarEnvironment import Environment
 from SarAgent import MissingPerson
 
+
+params = {
+    "height": 90,
+    "width": 60,
+    "search_pattern": UserSettableParameter('choice', "Zoekpatroon", value='Parallel Sweep',
+                                            choices=['Parallel Sweep',
+                                                     'Expanding Square',
+                                                     'Sector Search',
+                                                     'Random Search']),
+    "search_radius": UserSettableParameter("slider", "Search radius (in 10m)", 5, 3, 20, 1),
+    "max_current": UserSettableParameter("slider", "maximum current in riptide (m/s)", 10, 1, 20, 1)
+}
+
 def portrayal_method(agent):
-    "Checks if the agent is an instance of a Unit of of a missing person: change portrayal accordingly"
-    if agent is None:
-        return
+    """ Defines how a cell in the grid will be portrayed. All cells contain an environment agent with an attribute for
+    the current. According to this parameter the cell will be shown in a certain shade of blue. If a cell also contains
+    an unit agent of missing person agent, in a higher layer this will be shown with a circle. Black for the missing
+    person and red for the looking unit"""
+    rg_init = 240
+    blue = '#%02x%02x%02x' % (rg_init, rg_init, 255)
+
+    portrayal = {"Shape": "rect",
+                 "w": 1,"h": 1,
+                 "Color": blue,
+                 "Filled": "true",
+                 "Layer": 0
+
+    }
+
+    if isinstance(agent, Environment):
+        if agent.current != 0:
+            # fraction = agent.current / SearchAndRescue.max_current
+            fraction = agent.current / 10
+            rg = int(rg_init - rg_init * fraction)
+            blue_tint = '#%02x%02x%02x' % (rg, rg, 255)
+            portrayal["Color"] = blue_tint
 
     if isinstance(agent, Unit):
-        # portrayal = {"Shape": "arrowHead",
-        #              "Filled": "true",
-        #              "Layer": 1,
-        #              "Color": "blue",
-        #              "scale": 1,
-        #              "heading_x": 1,
-        #              "heading_y": 0}
-        portrayal = {"Shape": "circle",
-                        "Filled": "true",
-                        "Layer": 1,
-                        "Color": "blue",
-                        "r": 1}
-    else:
-        # is the agent the missing person?
-        portrayal = {"Shape": "circle",
-                        "Filled": "true",
-                        "Layer": 1,
-                        "Color": "red",
-                        "r": 1}
+        portrayal["Shape"] = "circle"
+        portrayal["Color"] = 'red'
+        portrayal["Layer"] = 1
+        portrayal["r"] = 0.8
 
-
+    if isinstance(agent, MissingPerson):
+        portrayal["Shape"] = "circle"
+        portrayal["Color"] = "black"
+        portrayal["Layer"] = 1
+        portrayal["r"] = 0.8
 
     return portrayal
 
 
-grid = CanvasGrid(portrayal_method, 90, 60, 900 , 600)
-params = {
-    "height": 90,
-    "width": 60,
-    "search_pattern_slider": UserSettableParameter('choice', "Zoekpatroon", value='Parallel Sweep',
-                                          choices=['Parallel Sweep',
-                                                   'Expanding Square',
-                                                   'Sector Search',
-                                                   'Random Search']),
-    "search_radius": UserSettableParameter("slider", "Search radius (in 10m)", 5, 3, 20, 1)
-}
+grid = CanvasGrid(portrayal_method, 90, 60, 900, 600)
 
 server = ModularServer(SearchAndRescue, [grid], "Sar Model", params)

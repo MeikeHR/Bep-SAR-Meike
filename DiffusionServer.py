@@ -31,6 +31,8 @@ def diffusion_portrayal(agent):
     red = int(log_norm(agent.amount, agent.model.lowerbound, agent.model.initdrop))
     portrayal["Color"] = '#FF%02x%02x' % (255 - red, 255 - red)
 
+    return portrayal
+
 canvas_element = CanvasGrid(diffusion_portrayal, 50, 50, 500 ,500)
 
 model_params = {
