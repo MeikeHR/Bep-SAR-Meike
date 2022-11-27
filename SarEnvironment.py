@@ -1,5 +1,6 @@
 from mesa import Agent
 
+
 class Environment(Agent):
 
     def __init__(self, pos, current, model):

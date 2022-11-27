@@ -33,11 +33,17 @@ class SearchAndRescue(Model):
         # current is 2/3 of the model height
         length_rc = self.grid.height * 2 / 3
 
+        # Create the environment, containing the values and directions of the currents
         for (contents, x, y) in self.grid.coord_iter():
             if right_rc > x > left_rc and y < length_rc:
-                current = self.max_current
-                cell = Environment((x, y), current, self)
-                self.grid.place_agent(cell, (x, y))
+                if (x - left_rc) <= rc_width/2:
+                    current = (x - left_rc) * self.max_current / (width / 2)
+                    cell = Environment((x, y), current, self)
+                    self.grid.place_agent(cell, (x, y))
+                else:
+                    current = (right_rc - x) * self.max_current / (width / 2)
+                    cell = Environment((x, y), current, self)
+                    self.grid.place_agent(cell, (x, y))
             else:
                 current = 0
                 cell = Environment((x, y), current, self)
