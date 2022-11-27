@@ -143,13 +143,24 @@ class Unit(Agent):
 
 
 class MissingPerson(Agent):
-    def __init__(self, unique_id, pos, model, stamina):
+    def __init__(self, unique_id, pos, model, stamina=800):
         super().__init__(unique_id, model)
         self.stamina = stamina
         self.pos = pos
 
     def move(self):
-        pass
+        for object in self.model.grid.get_cell_list_contents(self.pos):
+            if isinstance(object, Environment):
+                current = object.current
+
+        x, y = self.pos
+        y += int(current)
+        self.model.grid.move_agent(self, (x, y))
+
+        "Still need to add random or non-random choice of movement"
+
+        # current = (object.current if isinstance(object, Environment) for object in self.model.grid.get_cell_list_contents(self.pos))
+
         # possible_steps = self.model.grid.get_neighborhood(self.pos, moore=True, include_center="False")
         # new_position = random.choice(possible_steps)
         # self.model.grid.move_agent(self, new_position)
@@ -160,5 +171,7 @@ class MissingPerson(Agent):
         # tijd tot verdrinking
         if self.stamina != 0:
             self.move()
+        self.stamina -= 1
+
 
 
