@@ -172,6 +172,7 @@ class MissingPerson(Agent):
         if self.stamina != 0:
             self.move()
         self.stamina -= 1
+        # test
 
 
 
