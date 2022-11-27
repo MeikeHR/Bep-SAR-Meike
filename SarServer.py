@@ -25,12 +25,6 @@ def portrayal_method(agent):
     the current. According to this parameter the cell will be shown in a certain shade of blue. If a cell also contains
     an unit agent of missing person agent, in a higher layer this will be shown with a circle. Black for the missing
     person and red for the looking unit"""
-    #
-    # portrayal = {"Shape": "circle",
-    #              "Filled": "true",
-    #              "Layer": 0,
-    #              "Color": "yellow",
-    #              "r": 1}
     rg_init = 240
     blue = '#%02x%02x%02x' % (rg_init, rg_init, 255)
 
@@ -54,13 +48,13 @@ def portrayal_method(agent):
         portrayal["Shape"] = "circle"
         portrayal["Color"] = 'red'
         portrayal["Layer"] = 1
-        portrayal["r"] = 0.5
+        portrayal["r"] = 0.8
 
     if isinstance(agent, MissingPerson):
         portrayal["Shape"] = "circle"
         portrayal["Color"] = "black"
         portrayal["Layer"] = 1
-        portrayal["r"] = 0.5
+        portrayal["r"] = 0.8
 
     return portrayal
 
