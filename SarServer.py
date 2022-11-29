@@ -33,27 +33,34 @@ def portrayal_method(agent):
                  "Color": blue,
                  "Filled": "true",
                  "Layer": 0
-
     }
 
     if isinstance(agent, Environment):
+
+        if agent.path:
+                grey = '#%02x%02x%02x' % (100, 100, 100)
+                portrayal["Color"] = grey
+                portrayal["Layer"] = 1
+
         if agent.current != 0:
-            # fraction = agent.current / SearchAndRescue.max_current
-            fraction = agent.current / 10
-            rg = int(rg_init - rg_init * fraction)
-            blue_tint = '#%02x%02x%02x' % (rg, rg, 255)
-            portrayal["Color"] = blue_tint
+            if agent.path is False:
+                # fraction = agent.current / SearchAndRescue.max_current
+                fraction = agent.current / 10
+                rg = int(rg_init - rg_init * fraction)
+                blue_tint = '#%02x%02x%02x' % (rg, rg, 255)
+                portrayal["Color"] = blue_tint
+                portrayal["Layer"] = 0
 
     if isinstance(agent, Unit):
         portrayal["Shape"] = "circle"
         portrayal["Color"] = 'red'
-        portrayal["Layer"] = 1
+        portrayal["Layer"] = 2
         portrayal["r"] = 0.8
 
     if isinstance(agent, MissingPerson):
         portrayal["Shape"] = "circle"
         portrayal["Color"] = "black"
-        portrayal["Layer"] = 1
+        portrayal["Layer"] = 2
         portrayal["r"] = 0.8
 
     return portrayal

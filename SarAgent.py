@@ -15,6 +15,10 @@ class Unit(Agent):
         self.going_left = False
         self.step_nr = 0
 
+        self.reached_middle = False
+
+    """The following functions will define the way of movement through the water due to the chosen search pattern."""
+
     def move_ps(self):
         """
         1. Is the agent still looking or did they spot the missing person?
@@ -61,6 +65,33 @@ class Unit(Agent):
             self.model.grid.move_agent(self, new_pos)
             self.step_nr += 1
 
+    def move_es(self):
+        """Defines the Expanding Square search pattern"""
+        print(f"Trying to move with expanding square search pattern")
+
+        """First move to the middle, then make slagen van bepaalde lengte, + vaste lengte"""
+
+        middle_grid = (self.model.grid.width // 2, self.model.grid.height // 2)
+        print(middle_grid)
+        if self.reached_middle:
+            self.move_ps()
+        else:
+            self.move_to(middle_grid)
+            if middle_grid in self.model.grid.get_neighborhood(self.pos, moore=True, include_center=False, radius=1):
+                self.reached_middle = True
+
+
+    def move_ss(self):
+        """Defines the Sector Search search pattern"""
+        print(f"Trying to move with Sector Search pattern")
+        pass
+
+    def move_rs(self):
+        """Defines the Random Search  pattern"""
+        print(f"Trying to move with random search pattern")
+
+        pass
+
     def look(self, radius):
         # get neighbors radius range
         field = self.model.grid.get_neighborhood(self.pos, moore=True, include_center=False, radius=radius)
@@ -97,7 +128,6 @@ class Unit(Agent):
             agents = self.model.grid.get_cell_list_contents(new_pos)
             if any(isinstance(agent, MissingPerson) for agent in agents):
                 self.model.running = False
-                return print(f"Stop de tijd, persoon is gevonden! Feestje")
             self.model.grid.move_agent(self, new_pos)
 
         elif dx > dy:
@@ -110,7 +140,6 @@ class Unit(Agent):
             agents = self.model.grid.get_cell_list_contents(new_pos)
             if any(isinstance(agent, MissingPerson) for agent in agents):
                 self.model.running = False
-                return print(f"Stop de tijd, persoon is gevonden! Feestje")
             self.model.grid.move_agent(self, new_pos)
 
         else:
@@ -123,16 +152,20 @@ class Unit(Agent):
             else:
                 new_y = y - 1
             new_pos = (new_x, new_y)
-            print(f"moving from {self.pos} to {new_pos} for dy = dx")
             agents = self.model.grid.get_cell_list_contents(new_pos)
             if any(isinstance(agent, MissingPerson) for agent in agents):
                 # if isinstance(self.model.grid.get_cell_list_contents(new_pos), MissingPerson):
                 # if not self.model.grid.is_cell_empty(new_pos):
                 self.model.running = False
-                return print(f"Stop de tijd, persoon is gevonden! Feestje")
             self.model.grid.move_agent(self, new_pos)
 
     def step(self):
+        loc = self.model.grid.get_cell_list_contents(self.pos)
+        print(loc)
+        for obj in loc:
+            if isinstance(obj, Environment):
+                obj.path = True
+
         pos_mp = self.look(self.model.search_radius)
         print(f"pos_mp = {pos_mp}")
         if pos_mp is not ():
@@ -140,7 +173,12 @@ class Unit(Agent):
         else:
             if self.model.search_pattern == 'Parallel Sweep':
                 self.move_ps()
-
+            elif self.model.search_pattern == 'Expanding Square':
+                self.move_es()
+            elif self.model.search_pattern == 'Sector Search':
+                self.move_ss()
+            elif self.model.search_pattern == 'Random Search':
+                self.move_rs()
 
 class MissingPerson(Agent):
     def __init__(self, unique_id, pos, model, stamina=800):

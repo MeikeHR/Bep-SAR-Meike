@@ -38,15 +38,15 @@ class SearchAndRescue(Model):
             if right_rc > x > left_rc and y < length_rc:
                 if (x - left_rc) <= rc_width/2:
                     current = (x - left_rc) * self.max_current / (width / 2)
-                    cell = Environment((x, y), current, self)
+                    cell = Environment((x, y), current, False, self)
                     self.grid.place_agent(cell, (x, y))
                 else:
                     current = (right_rc - x) * self.max_current / (width / 2)
-                    cell = Environment((x, y), current, self)
+                    cell = Environment((x, y), current, False, self)
                     self.grid.place_agent(cell, (x, y))
             else:
                 current = 0
-                cell = Environment((x, y), current, self)
+                cell = Environment((x, y), current, False, self)
                 self.grid.place_agent(cell, (x, y))
 
         self.schedule = SimultaneousActivation(self)
