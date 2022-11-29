@@ -133,6 +133,12 @@ class Unit(Agent):
             self.model.grid.move_agent(self, new_pos)
 
     def step(self):
+        loc = self.model.grid.get_cell_list_contents(self.pos)
+        print(loc)
+        for obj in loc:
+            if isinstance(obj, Environment):
+                obj.path = True
+
         pos_mp = self.look(self.model.search_radius)
         print(f"pos_mp = {pos_mp}")
         if pos_mp is not ():
