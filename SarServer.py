@@ -33,13 +33,11 @@ def portrayal_method(agent):
                  "Color": blue,
                  "Filled": "true",
                  "Layer": 0
-
     }
 
     if isinstance(agent, Environment):
 
         if agent.path:
-                print(f'test grijs')
                 grey = '#%02x%02x%02x' % (100, 100, 100)
                 portrayal["Color"] = grey
                 portrayal["Layer"] = 1
