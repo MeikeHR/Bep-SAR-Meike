@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from mesa import Agent
 
 from SarEnvironment import Environment
@@ -67,9 +68,8 @@ class Unit(Agent):
 
     def move_es(self):
         """Defines the Expanding Square search pattern"""
-        print(f"Trying to move with expanding square search pattern")
 
-        """First move to the middle, then make slagen van bepaalde lengte, + vaste lengte"""
+        # First move to the middle, then make slagen van bepaalde lengte, + vaste lengte
 
         middle_grid = (self.model.grid.width // 2, self.model.grid.height // 2)
         print(middle_grid)
@@ -80,16 +80,12 @@ class Unit(Agent):
             if middle_grid in self.model.grid.get_neighborhood(self.pos, moore=True, include_center=False, radius=1):
                 self.reached_middle = True
 
-
     def move_ss(self):
         """Defines the Sector Search search pattern"""
-        print(f"Trying to move with Sector Search pattern")
         pass
 
     def move_rs(self):
         """Defines the Random Search  pattern"""
-        print(f"Trying to move with random search pattern")
-
         pass
 
     def look(self, radius):
@@ -111,7 +107,8 @@ class Unit(Agent):
         return ()
 
     def move_to(self, position):
-        print(f"trying to move to mp")
+        """With a given position, try moving there (shortest path).
+        If the position is one of the agents neighbors, stop the model (running = False)"""
         x, y = self.pos
         x_mp, y_mp = position
 
@@ -161,13 +158,13 @@ class Unit(Agent):
 
     def step(self):
         loc = self.model.grid.get_cell_list_contents(self.pos)
-        print(loc)
+        # print(loc)
         for obj in loc:
             if isinstance(obj, Environment):
                 obj.path = True
 
         pos_mp = self.look(self.model.search_radius)
-        print(f"pos_mp = {pos_mp}")
+        # print(f"pos_mp = {pos_mp}")
         if pos_mp is not ():
             self.move_to(pos_mp)
         else:
@@ -187,26 +184,27 @@ class MissingPerson(Agent):
         self.pos = pos
 
     def move(self):
+        # What is the current of the cell of the agent?
         for object in self.model.grid.get_cell_list_contents(self.pos):
             if isinstance(object, Environment):
                 current = object.current
+                print(f"current at MP location: {current}")
 
+        # Move according to this current
         x, y = self.pos
-        y += int(current)
+        # y += math.ceil(current)
+        if current > 0:
+            y += 1
         self.model.grid.move_agent(self, (x, y))
 
         "Still need to add random or non-random choice of movement"
-
-        # current = (object.current if isinstance(object, Environment) for object in self.model.grid.get_cell_list_contents(self.pos))
 
         # possible_steps = self.model.grid.get_neighborhood(self.pos, moore=True, include_center="False")
         # new_position = random.choice(possible_steps)
         # self.model.grid.move_agent(self, new_position)
 
     def step(self):
-        # stroming
-        # eigenschappen
-        # tijd tot verdrinking
+        # stroming, eigenschappen, tijd tot verdrinking
         if self.stamina != 0:
             self.move()
         self.stamina -= 1
