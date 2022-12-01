@@ -20,6 +20,7 @@ params = {
     "max_current": UserSettableParameter("slider", "maximum current in riptide (m/s)", 10, 1, 20, 1)
 }
 
+
 def portrayal_method(agent):
     """ Defines how a cell in the grid will be portrayed. All cells contain an environment agent with an attribute for
     the current. According to this parameter the cell will be shown in a certain shade of blue. If a cell also contains
