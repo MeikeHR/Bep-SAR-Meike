@@ -42,10 +42,10 @@ def portrayal_method(agent):
                 portrayal["Color"] = grey
                 portrayal["Layer"] = 1
 
-        if agent.current != 0:
+        if agent.current_y != 0:
             if agent.path is False:
                 # fraction = agent.current / SearchAndRescue.max_current
-                fraction = agent.current / 10
+                fraction = agent.current_y / 10
                 rg = int(rg_init - rg_init * fraction)
                 blue_tint = '#%02x%02x%02x' % (rg, rg, 255)
                 portrayal["Color"] = blue_tint

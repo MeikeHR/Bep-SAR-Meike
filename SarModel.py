@@ -37,27 +37,30 @@ class SearchAndRescue(Model):
         for (contents, x, y) in self.grid.coord_iter():
             if right_rc > x > left_rc and y < length_rc:
                 if (x - left_rc) <= rc_width/2:
-                    current = (x - left_rc) * self.max_current / (width / 2)
-                    cell = Environment((x, y), current, False, self)
+                    current_x = 0
+                    current_y = (x - left_rc) * self.max_current / (width / 2)
+                    cell = Environment((x, y), current_x, current_y, False, self)
                     self.grid.place_agent(cell, (x, y))
                 else:
-                    current = (right_rc - x) * self.max_current / (width / 2)
-                    cell = Environment((x, y), current, False, self)
+                    current_x = 0
+                    current_y = (right_rc - x) * self.max_current / (width / 2)
+                    cell = Environment((x, y), current_x, current_y, False, self)
                     self.grid.place_agent(cell, (x, y))
             else:
-                current = 0
-                cell = Environment((x, y), current, False, self)
+                current_x = 0
+                current_y = 0
+                cell = Environment((x, y), current_x, current_y, False, self)
                 self.grid.place_agent(cell, (x, y))
 
         self.schedule = SimultaneousActivation(self)
 
         for i in range(num_units):
-            a = Unit(i, (i*10, i*10), self)
+            a = Unit(i, i*10, i*10, self)
             self.schedule.add(a)
             self.grid.place_agent(a, (i*10, i*10))
 
         pos_mp = (random.randrange(0, self.grid.width), random.randrange(0, int(self.grid.height / 3)))
-        missing_person = MissingPerson(999, pos_mp, self, 100)
+        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, 100)
         self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
 
