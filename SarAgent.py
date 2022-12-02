@@ -103,7 +103,7 @@ class Unit(Agent):
             self.move_ps()
         else:
             self.move_to(middle_grid)
-            if middle_grid in self.model.grid.get_neighborhood(self.pos, moore=True, include_center=False, radius=1):
+            if middle_grid in self.model.grid.get_neighborhood(self.xy_to_cell(), moore=True, include_center=False, radius=1):
                 self.reached_middle = True
 
     def move_ss(self):
@@ -111,16 +111,16 @@ class Unit(Agent):
         pass
 
     def move_rs(self):
-        """Defines the Random Search  pattern"""
+        """Defines the Random Search pattern"""
         pass
 
     def look(self, radius):
         # get neighbors radius range
-        field = self.model.grid.get_neighborhood(self.pos, moore=True, include_center=False, radius=radius)
+        field = self.model.grid.get_neighborhood(self.xy_to_cell(), moore=True, include_center=False, radius=radius)
 
         agents_in_range = {}
         for cell in field:
-            agents = self.model.grid.get_cell_list_contents(cell)
+            agents = self.model.grid.get_cell_list_contents((cell))
             for agent in agents:
                 if isinstance(agent, Environment):
                     agents_in_range["env"] = cell
@@ -148,7 +148,7 @@ class Unit(Agent):
             else:
                 self.y -= self.speed
 
-            agents = self.model.grid.get_cell_list_contents()
+            agents = self.model.grid.get_cell_list_contents((self.xy_to_cell()))
             if any(isinstance(agent, MissingPerson) for agent in agents):
                 self.model.running = False
 
@@ -177,7 +177,6 @@ class Unit(Agent):
     def step(self):
         cell_new = self.xy_to_cell()
         loc = self.model.grid.get_cell_list_contents(cell_new)
-        # print(loc)
         for obj in loc:
             if isinstance(obj, Environment):
                 obj.path = True
@@ -192,11 +191,6 @@ class Unit(Agent):
 
         print(f"real x: {self.x}, real y: {self.y}, cell position: {cell}")
 
-        # move_search (pattern of looking)
-        # move_current
-        # move_wind
-        # x en y to cell position
-
 
 class MissingPerson(Agent):
     def __init__(self, unique_id, x, y, model, stamina=800):
@@ -205,8 +199,7 @@ class MissingPerson(Agent):
         self.x = x
         self.y = y
 
-        self.current_influence = 0.5
-        # self.pos = pos
+        self.current_factor = 0.4
 
     def xy_to_cell(self):
         x = int(self.x)
@@ -214,7 +207,7 @@ class MissingPerson(Agent):
         return x, y
 
     def move_current(self):
-        # What is the current of the cell of the agent?
+        """Defines the influence of the current of the cell the person is in, on its position"""
         cell_now = self.xy_to_cell()
         for object in self.model.grid.get_cell_list_contents(cell_now):
             if isinstance(object, Environment):
@@ -222,17 +215,16 @@ class MissingPerson(Agent):
                 current_x = object.current_x
                 print(f"current at MP location in y richting: {current_y}")
 
-        # Move according to this current
-        # y += math.ceil(current)
         if current_y > 0:
-            self.y += self.current_influence
+            self.y += current_y * self.current_factor
+            self.x += current_x * self.current_factor
 
     def move_swim(self):
+        """Defines the persons swimming choices, will later be defined by personal traits"""
         self.x += (random.randrange(-10, 10, 1) / 10)
         self.y += (random.randrange(-10, 10, 1) / 10)
 
     def step(self):
-        # stroming, eigenschappen, tijd tot verdrinking
         if self.stamina != 0:
             """How will the person move due to the current in the given cell"""
             self.move_current()
@@ -243,6 +235,3 @@ class MissingPerson(Agent):
             self.model.grid.move_agent(self, cell)
 
         self.stamina -= 1
-
-
-
