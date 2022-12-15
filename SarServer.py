@@ -2,6 +2,8 @@ from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.UserParam import UserSettableParameter
 
+import math
+
 from SarModel import SearchAndRescue
 from SarAgent import Unit
 from SarEnvironment import Environment
@@ -17,7 +19,8 @@ params = {
                                                      'Sector Search',
                                                      'Random Search']),
     "search_radius": UserSettableParameter("slider", "Search radius (in 10m)", 5, 3, 20, 1),
-    "max_current": UserSettableParameter("slider", "maximum current in riptide (m/s)", 10, 1, 20, 1)
+    "max_current": UserSettableParameter("slider", "maximum current in riptide (m/s)", 10, 1, 20, 1),
+    "upper_current": UserSettableParameter("slider", "upper current in northerly direction (m/s)", 5, 1, 10, 1)
 }
 
 
@@ -39,14 +42,15 @@ def portrayal_method(agent):
     if isinstance(agent, Environment):
 
         if agent.path:
-                grey = '#%02x%02x%02x' % (100, 100, 100)
-                portrayal["Color"] = grey
-                portrayal["Layer"] = 1
+            grey = '#%02x%02x%02x' % (100, 100, 100)
+            portrayal["Color"] = grey
+            portrayal["Layer"] = 1
 
-        if agent.current_y != 0:
+        if agent.current_y != 0 or agent.current_x != 0:
             if agent.path is False:
-                # fraction = agent.current / SearchAndRescue.max_current
-                fraction = agent.current_y / 10
+                # fraction = agent.current_y / SearchAndRescue.max_current
+                cell_current = math.sqrt((agent.current_x**2 + agent.current_y**2))
+                fraction = cell_current / 20
                 rg = int(rg_init - rg_init * fraction)
                 blue_tint = '#%02x%02x%02x' % (rg, rg, 255)
                 portrayal["Color"] = blue_tint
