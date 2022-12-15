@@ -15,7 +15,7 @@ class Unit(Agent):
         self.y = y
 
         self.speed = 1
-        self.current_factor = 0.1
+        self.current_factor = 0.01
 
         self.going_up = False
         self.going_right = True
@@ -199,7 +199,7 @@ class MissingPerson(Agent):
         self.x = x
         self.y = y
 
-        self.current_factor = 0.4
+        self.current_factor = 0.05
 
     def xy_to_cell(self):
         x = int(self.x)
@@ -209,15 +209,15 @@ class MissingPerson(Agent):
     def move_current(self):
         """Defines the influence of the current of the cell the person is in, on its position"""
         cell_now = self.xy_to_cell()
-        for object in self.model.grid.get_cell_list_contents(cell_now):
-            if isinstance(object, Environment):
-                current_y = object.current_y
-                current_x = object.current_x
+
+        for obj in self.model.grid.get_cell_list_contents(cell_now):
+            if isinstance(obj, Environment):
+                current_y = obj.current_y
+                current_x = obj.current_x
                 print(f"current at MP location in y richting: {current_y}")
 
-        if current_y > 0:
-            self.y += current_y * self.current_factor
-            self.x += current_x * self.current_factor
+        self.y += current_y * self.current_factor
+        self.x += current_x * self.current_factor
 
     def move_swim(self):
         """Defines the persons swimming choices, will later be defined by personal traits"""
@@ -232,6 +232,12 @@ class MissingPerson(Agent):
             self.move_swim()
 
             cell = self.xy_to_cell()
-            self.model.grid.move_agent(self, cell)
+            x,y = cell
+            print(x,y, self.model.grid.width)
+            if x >= self.model.grid.width or y >= self.model.grid.height:
+                print("Person left the looking field and will not be found")
+                self.model.running = False
+            else:
+                self.model.grid.move_agent(self, cell)
 
         self.stamina -= 1
