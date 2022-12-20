@@ -237,6 +237,9 @@ class MissingPerson(Agent):
             if x >= self.model.grid.width or y >= self.model.grid.height:
                 print("Person left the looking field and will not be found")
                 self.model.running = False
+            elif x < 0 or y < 0:
+                print("Person left the looking field and will not be found")
+                self.model.running = False
             else:
                 self.model.grid.move_agent(self, cell)
 
