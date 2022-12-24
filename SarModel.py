@@ -3,6 +3,7 @@ import random
 from mesa import Model
 from mesa.time import SimultaneousActivation
 from mesa.space import MultiGrid
+from mesa.datacollection import DataCollector
 
 from SarAgent import Unit
 from SarAgent import MissingPerson
@@ -49,6 +50,8 @@ class SearchAndRescue(Model):
         self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
 
+        self.datacollector = DataCollector(model_reporters={}, agent_reporters={})
+
         self.running = True
 
     def init_current(self, x, y):
@@ -81,3 +84,4 @@ class SearchAndRescue(Model):
     def step(self):
         if self.running:
             self.schedule.step()
+        self.datacollector.collect(self)
