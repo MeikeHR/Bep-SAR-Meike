@@ -1,4 +1,5 @@
 from SarServer import server
+import pandas as pd
 from SarModel import SearchAndRescue
 # import gini
 
@@ -26,5 +27,25 @@ server.launch()
 #     for agent in model.schedule.agents:
 #         all_wealth.append(agent.wealth)
 
+# results = "hallo"
+# results_df = pd.DataFrame(results)
+# results_df.to_csv(filepath)
+#
+# from pathlib import Path
+# filepath = Path('folder/subfolder/out.csv')
+# filepath.parent.mkdir(parents=True, exist_ok=True)
+# df.to_csv(filepath)
+#
+# res = {'name': ['Raphael', 'Donatello'],
+#                    'mask': ['red', 'purple'],
+#                    'weapon': ['sai', 'bo staff']}
+# df = pd.DataFrame(res)
+# df.to_csv(index=False)
 
+# raw_data = {"city": ['Tripoli','Rome','Sydney'],
+#             "rank":['3rd','2nd','1st'],
+#             "name": ['Adam','Kevin','Pieter']}
+# # df = pd.DataFrame(raw_data, colums=['city','rank','name'])
+# df = pd.DataFrame(raw_data)
+# df.to_csv('C:/Users/mhrb0/OneDrive/Documenten/Delf/TB/BEP/Resultaten/test19-12.txt')
 
