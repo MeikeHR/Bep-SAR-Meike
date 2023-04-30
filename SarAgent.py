@@ -221,6 +221,8 @@ class MissingPerson(Agent):
 
     def move_swim(self):
         """Defines the persons swimming choices, will later be defined by personal traits"""
+        seed = self.model.seed
+        random.seed(seed)
         self.x += (random.randrange(-10, 10, 1) / 10)
         self.y += (random.randrange(-10, 10, 1) / 10)
 

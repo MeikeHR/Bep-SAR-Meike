@@ -10,6 +10,8 @@ from SarAgent import MissingPerson
 from SarEnvironment import Environment
 import SarServer
 
+import random
+
 
 class SearchAndRescue(Model):
 
@@ -19,7 +21,8 @@ class SearchAndRescue(Model):
                  num_units=1,
                  search_radius=3,
                  max_current=10,
-                 upper_current=2):
+                 upper_current=2,
+                 seed=random.randint(0,50000)):
         super().__init__()
 
         self.search_pattern = search_pattern
@@ -27,6 +30,7 @@ class SearchAndRescue(Model):
         self.num_units = num_units
         self.max_current = max_current
         self.upper_current = upper_current
+        self.seed = seed
 
         self.grid = MultiGrid(height, width, torus=False)
         self.schedule = SimultaneousActivation(self)
@@ -43,6 +47,7 @@ class SearchAndRescue(Model):
             self.schedule.add(a)
             self.grid.place_agent(a, (i*10, i*10))
 
+        random.seed(self.seed)
         pos_mp = (random.randrange(0, self.grid.width), random.randrange(0, int(self.grid.height / 3)))
         # pos_mp = (85, 50)
         # pos_mp = (80, 3)
