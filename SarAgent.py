@@ -193,9 +193,11 @@ class Unit(Agent):
 
 
 class MissingPerson(Agent):
-    def __init__(self, unique_id, x, y, model, stamina=800):
+    def __init__(self, unique_id, x, y, model, stamina=800, profile=1):
         super().__init__(unique_id, model)
         self.stamina = stamina
+        self.profile = profile
+
         self.x = x
         self.y = y
 
