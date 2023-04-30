@@ -13,6 +13,7 @@ if not Experimenting:
     server.launch()
 else:
     time_till_drowning = 500
+    num_iterations = 10
 
     seed_list = []
     search_pattern_list = []
@@ -22,7 +23,7 @@ else:
     upper_current_list = []
     time_list = []
 
-    for i in range(0,5):
+    for i in range(0,num_iterations):
         nr_steps = 0
         seed = random.randint(0,500000)
 
