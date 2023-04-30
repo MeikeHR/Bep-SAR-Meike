@@ -31,8 +31,8 @@ else:
         height = 60
         search_pattern = "Parallel sweep"
         num_units = 1
-        search_radius = 10
-        max_current = 2
+        search_radius = 5
+        max_current = 5
         upper_current = 1
 
         model = SearchAndRescue(width, height, search_pattern, num_units, search_radius, max_current,upper_current,seed)
