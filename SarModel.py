@@ -24,8 +24,8 @@ class SearchAndRescue(Model):
                  upper_current=2,
                  stamina=200,
                  profile=1,
-                 seed=205140,
-                 # seed=random.randint(0,50000)
+                 # seed=205140,
+                 seed=random.randint(0,50000)
                  ):
         super().__init__()
 
@@ -60,9 +60,9 @@ class SearchAndRescue(Model):
         random.seed(self.seed)
         pos_mp = (random.randrange(int(self.grid.width * 2/5), int(self.grid.width * 3/5)),
                   random.randrange(int(self.grid.height / 6), int(self.grid.height / 3)))
-        # pos_mp = (85, 50)
-        # pos_mp = (80, 3)
+
         missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, self.profile)
+
         self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
 
