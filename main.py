@@ -25,6 +25,7 @@ elif Experimenting and not single_seed:
     upper_current_list = []
     stamina_list = []
     profile_list = []
+    # tijd_melding_list = []
     time_list = []
 
     for i in range(0,num_iterations):
@@ -39,6 +40,7 @@ elif Experimenting and not single_seed:
         max_current = 5
         upper_current = 1
         stamina = 100
+        # tijd_melding = 10
         profile = 1
 
         model = SearchAndRescue(width, height, search_pattern,
@@ -62,6 +64,7 @@ elif Experimenting and not single_seed:
         upper_current_list.append(upper_current)
         stamina_list.append(stamina)
         profile_list.append(profile)
+        # tijd_melding_list.append(tijd_melding)
         time_list.append(time)
 
 
@@ -101,7 +104,7 @@ elif Experimenting and single_seed:
     while model.running and nr_steps <= time_till_drowning:
         model.step()
         nr_steps += 1
-        print(nr_steps)
+        # print(nr_steps)
 
     if nr_steps == time_till_drowning:
         time = 0

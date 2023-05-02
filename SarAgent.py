@@ -96,7 +96,7 @@ class Unit(Agent):
     def move_es(self):
         """Defines the Expanding Square search pattern"""
 
-        # First move to the middle, dan slagen van bepaalde lengte, + vaste lengte
+        # First move to the middle, then make slagen van bepaalde lengte, + vaste lengte
         middle_grid = (self.model.grid.width // 2, self.model.grid.height // 2)
         print(middle_grid)
         if self.reached_middle:
@@ -202,7 +202,6 @@ class MissingPerson(Agent):
         self.y = y
 
         self.current_factor = 0.05
-        self.swimming_speed = 1
 
     def xy_to_cell(self):
         x = int(self.x)
@@ -212,8 +211,6 @@ class MissingPerson(Agent):
     def move_current(self):
         """Defines the influence of the current of the cell the person is in, on its position"""
         cell_now = self.xy_to_cell()
-        seed = self.model.seed
-        random.seed(seed)
 
         for obj in self.model.grid.get_cell_list_contents(cell_now):
             if isinstance(obj, Environment):
@@ -224,16 +221,10 @@ class MissingPerson(Agent):
         self.y += current_y * self.current_factor
         self.x += current_x * self.current_factor
 
-        """Ïnvloed van stroming blijft stochastisch en niet te voorspellen"""
-        self.x += (random.randrange(-1, 1, 0.1)) * current_x * self.current_factor
-        self.y += (random.randrange(-1, 1, 0.1)) * current_y * self.current_factor
-
     def move_swim(self):
-        """Defines the persons swimming choices, defined by personal traits"""
+        """Defines the persons swimming choices, will later be defined by personal traits"""
         cell_now = self.xy_to_cell()
         x, y = cell_now
-        seed = self.model.seed
-        random.seed(seed)
 
         "Vermiste laat zich meevoeren en zwemt vervolgens naar het strand terug"
         if self.profile == 1:
@@ -242,21 +233,22 @@ class MissingPerson(Agent):
                     pass
 
             if y >= self.model.grid.height/3:
-                self.x += self.swimming_speed
+                self.x += 1
                 self.stamina -= 1
 
             if x >= (self.model.grid.width * 3/5) + 2:
-                self.y -= self.swimming_speed
+                self.y -= 1
                 self.stamina -= 1
 
         if self.profile == 2:
-            self.x += (random.randrange(-self.swimming_speed, self.swimming_speed, 4))
-            self.y += (random.randrange(-self.swimming_speed, self.swimming_speed, 4))
+            seed = self.model.seed
+            random.seed(seed)
+            self.x += (random.randrange(-10, 10, 1) / 10)
+            self.y += (random.randrange(-10, 10, 1) / 10)
 
         if self.profile == 3:
-            self.y -= self.swimming_speed
+            self.y -= 1
             self.stamina -= 3
-
 
 
 
