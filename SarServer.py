@@ -20,7 +20,8 @@ params = {
                                                      'Random Search']),
     "search_radius": UserSettableParameter("slider", "Search radius (in 10m)", 5, 3, 20, 1),
     "max_current": UserSettableParameter("slider", "maximum current in riptide (m/s)", 10, 1, 20, 1),
-    "upper_current": UserSettableParameter("slider", "upper current in northerly direction (m/s)", 5, 1, 10, 1)
+    "upper_current": UserSettableParameter("slider", "upper current in northerly direction (m/s)", 5, 1, 10, 1),
+    "stamina": UserSettableParameter("slider", "initial stamina of the missing person (-)", 200, 100, 500, 50)
 }
 
 
