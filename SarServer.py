@@ -19,11 +19,11 @@ params = {
                                                      'Sector Search',
                                                      'Random Search']),
     "search_radius": UserSettableParameter("slider", "Search radius (in 10m)", 5, 3, 20, 1),
-    "max_current": UserSettableParameter("slider", "maximum current in riptide (m/s)", 10, 1, 20, 1),
-    "upper_current": UserSettableParameter("slider", "upper current in northerly direction (m/s)", 5, 1, 10, 1),
-    "stamina": UserSettableParameter("slider", "stamina (-)", 200, 100, 500, 50),
+    "max_current": UserSettableParameter("slider", "maximum current in riptide (m/s)", 2.5, 1, 2.5, 0.5),
+    "upper_current": UserSettableParameter("slider", "upper current in northerly direction (m/s)", 0.77, 0.41, 0.77, 0.01),
+    "stamina": UserSettableParameter("slider", "stamina (-)", 1800, 600, 3600, 200),
     "profile": UserSettableParameter("slider", "profile (-)", 1, 1, 3, 1),
-    # "tijd_melding": UserSettableParameter("slider", "tijd_melding(minuten)", 5, 0, 30, 5),
+    "tijd_melding": UserSettableParameter("slider", "tijd_melding(minuten)", 10, 0, 10, 1),
 
 
 }
@@ -57,7 +57,8 @@ def portrayal_method(agent):
             if agent.path is False:
                 # fraction = agent.current_y / SearchAndRescue.max_current
                 cell_current = math.sqrt((agent.current_x**2 + agent.current_y**2))
-                fraction = cell_current / 20
+                """"Bepaal dichtheid van de kleuren (factor4 4)"""
+                fraction = cell_current/4
                 rg = int(rg_init - rg_init * fraction)
                 blue_tint = '#%02x%02x%02x' % (rg, rg, 255)
                 portrayal["Color"] = blue_tint

@@ -1,4 +1,5 @@
 import random
+import math
 
 from mesa import Model
 from mesa.time import SimultaneousActivation
@@ -20,8 +21,8 @@ class SearchAndRescue(Model):
                  search_pattern='Parallel Sweep',
                  num_units=1,
                  search_radius=3,
-                 max_current=10,
-                 upper_current=2,
+                 max_current=1.5,
+                 upper_current=0.5,
                  stamina=200,
                  profile=1,
                  tijd_melding=10,
@@ -38,7 +39,7 @@ class SearchAndRescue(Model):
         self.stamina = stamina
         self.profile = profile
         self.seed = seed
-        self.tijd_melding = tijd_melding * 60
+        self.tijd_melding_sec = tijd_melding * 60
 
 
         self.grid = MultiGrid(height, width, torus=False)
@@ -65,6 +66,8 @@ class SearchAndRescue(Model):
         self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
 
+        self.A, self.B, self.C, self.D = self.zoekgebied()
+
         """Create the SAR Unit"""
         for i in range(self.num_units):
             starting_pos_unit = [1,1]
@@ -75,10 +78,6 @@ class SearchAndRescue(Model):
         self.datacollector = DataCollector(model_reporters={}, agent_reporters={})
 
         self.running = True
-
-        for i in range(10):
-            print(random.randrange(18, 23))
-
 
     def init_current(self, x, y):
         breedte = 6
@@ -106,6 +105,26 @@ class SearchAndRescue(Model):
             current_x += self.upper_current
 
         return current_x, current_y
+
+    def zoekgebied(self):
+        "Inital zoekgebied"
+        A = [200,100]
+        B = [900,100]
+        C = [200,550]
+        D = [900,550]
+
+        "Invloed van tijd en stroming"
+        a_tijd = int(((self.upper_current+(self.max_current/2)/2) * self.tijd_melding_sec)/(math.sqrt(2)))
+        a_stroming = int(((self.upper_current - 0.41) / (0.77-0.41))*200)
+
+        B[0] += a_tijd + a_stroming
+        D[0] += a_tijd + a_stroming
+        D[1] += a_tijd
+        C[1] += a_tijd
+
+        print(f"Zoekgebied - A: {A},B: {B}, C:{C}, D: {D}")
+        return A, B, C, D
+
 
     def step(self):
         if self.running:
