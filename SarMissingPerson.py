@@ -23,14 +23,14 @@ class MissingPerson(Agent):
     def move_current(self):
         """Defines the influence of the current of the cell the person is in, on its position"""
         cell_now = self.xy_to_cell()
-        print(cell_now)
+        # print(cell_now)
 
         for obj in self.model.grid.get_cell_list_contents(cell_now):
             if isinstance(obj, Environment):
                 current_y = obj.current_y
                 current_x = obj.current_x
-                print(f"current at MP location in x richting: {current_x}")
-                print(f"current at MP location in y richting: {current_y}")
+                # print(f"current at MP location in x richting: {current_x}")
+                # print(f"current at MP location in y richting: {current_y}")
 
         self.y += current_y
         self.x += current_x
@@ -40,7 +40,7 @@ class MissingPerson(Agent):
         cell_now = self.xy_to_cell()
         x_cell, y_cell = cell_now
 
-        print(f'x, y before swimming{self.x, self.y}')
+        # print(f'x, y before swimming{self.x, self.y}')
 
         "Vermiste laat zich meevoeren en zwemt vervolgens naar het strand terug"
         if self.profile == 1:
@@ -66,7 +66,7 @@ class MissingPerson(Agent):
             self.y -= 1
             self.stamina -= 3
 
-        print(f'x, y after swimming{self.x, self.y}')
+        # print(f'x, y after swimming{self.x, self.y}')
 
 
 
@@ -95,7 +95,7 @@ class MissingPerson(Agent):
 
             # Weersomstandigheden toevoegen
             self.stamina -= 1
-            print(self.stamina)
+            # print(self.stamina)
         else:
             self.model.running = False
             print(f'Person ran out of stamina')

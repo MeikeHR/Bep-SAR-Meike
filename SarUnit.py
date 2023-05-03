@@ -3,6 +3,7 @@ import numpy as np
 import math
 
 from mesa import Agent
+from SarMissingPerson import MissingPerson
 from SarEnvironment import Environment
 
 
@@ -10,8 +11,11 @@ class Unit(Agent):
 
     def __init__(self, unique_id, x, y, model):
         super().__init__(unique_id, model)
-        self.x = x
-        self.y = y
+        self.x = x * 20
+        self.y = y * 20
+
+        self.x_cell, self.y_cell = self.xy_to_cell()
+
 
         self.speed = 12.86
 
@@ -20,7 +24,13 @@ class Unit(Agent):
         self.going_left = False
         self.step_nr = 0
 
+
         self.tick = 0
+
+        "Parallel sweep variables"
+        self.tick_ps = 0
+        self.lang_kort_ps = "LANG"
+        self.richting_ps = 'RECHTS'
 
         self.reached_middle = False
 
@@ -35,7 +45,7 @@ class Unit(Agent):
             self.move_to_new(pos_mp)
         else:
             if self.model.search_pattern == 'Parallel Sweep':
-                self.move_ps()
+                self.move_ps_new()
             elif self.model.search_pattern == 'Expanding Square':
                 self.move_es()
             elif self.model.search_pattern == 'Sector Search':
@@ -92,6 +102,50 @@ class Unit(Agent):
         else:
             self.y += self.speed
             self.step_nr += 1
+
+    def move_ps_new(self):
+        self.tick_ps += 1
+        track_spacing = self.model.search_radius * 2
+
+        print(f'slag:{self.lang_kort_ps}, richting: {self.richting_ps}')
+
+
+        ticks_lang = int((((self.model.B[0] - self.model.A[0])*20) / self.speed))
+        ticks_kort = int(track_spacing*20 / self.speed)
+
+
+        if self.lang_kort_ps == "LANG":
+            "Bij het eind?"
+            if self.tick_ps == ticks_lang:
+
+                self.tick_ps = 0
+                self.lang_kort_ps = "KORT"
+                if self.richting_ps == "RECHTS":
+                    self.x += self.speed
+                    self.richting_ps = "LINKS"
+                else:
+                    self.x -= self.speed
+                    self.richting_ps = "RECHTS"
+                print(f'ticks lang > slag:{self.lang_kort_ps}, richting: {self.richting_ps}')
+
+            else:
+                if self.richting_ps == "RECHTS":
+                    self.x += self.speed
+                else:
+                    self.x -= self.speed
+
+        if self.lang_kort_ps == "KORT":
+            "Bij het eind?"
+            if self.tick_ps == ticks_kort:
+                self.lang_kort_ps = "LANG"
+                self.y += self.speed
+                self.tick_ps = 0
+                print(f'ticks kort > slag:{self.lang_kort_ps}, richting: {self.richting_ps}')
+            else:
+                self.y += self.speed
+
+        """"D"""
+
 
     def move_es(self):
         """Defines the Expanding Square search pattern"""
@@ -176,6 +230,7 @@ class Unit(Agent):
 
     def step(self):
         self.tick += 1
+        self.x_cell, self.y_cell = self.xy_to_cell()
         if self.tick > self.model.tijd_melding_sec:
             cell_new = self.xy_to_cell()
             loc = self.model.grid.get_cell_list_contents(cell_new)
