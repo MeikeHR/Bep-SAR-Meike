@@ -14,7 +14,7 @@ class Unit(Agent):
         self.x = x
         self.y = y
 
-        self.speed = 1
+        self.speed = 12.86
         self.current_factor = 0.01
 
         self.going_up = False
@@ -27,8 +27,8 @@ class Unit(Agent):
         self.reached_middle = False
 
     def xy_to_cell(self):
-        x = int(self.x)
-        y = int(self.y)
+        x = int(self.x/20)
+        y = int(self.y/20)
         return x, y
 
     def move_search(self):
@@ -178,7 +178,7 @@ class Unit(Agent):
 
     def step(self):
         self.tick += 1
-        if self.tick > self.model.tijd_melding:
+        if self.tick > self.model.tijd_melding_sec:
             cell_new = self.xy_to_cell()
             loc = self.model.grid.get_cell_list_contents(cell_new)
             for obj in loc:
@@ -203,45 +203,49 @@ class MissingPerson(Agent):
         self.stamina = self.model.stamina
         self.profile = profile
 
-        self.x = x
-        self.y = y
+        self.x = x*20
+        self.y = y*20
 
-        self.current_factor = 0.05
+        # self.current_factor = 0.05
 
     def xy_to_cell(self):
-        x = int(self.x)
-        y = int(self.y)
+        x = int(self.x/20)
+        y = int(self.y/20)
         return x, y
 
     def move_current(self):
         """Defines the influence of the current of the cell the person is in, on its position"""
         cell_now = self.xy_to_cell()
+        print(cell_now)
 
         for obj in self.model.grid.get_cell_list_contents(cell_now):
             if isinstance(obj, Environment):
                 current_y = obj.current_y
                 current_x = obj.current_x
+                print(f"current at MP location in x richting: {current_x}")
                 print(f"current at MP location in y richting: {current_y}")
 
-        self.y += current_y * self.current_factor
-        self.x += current_x * self.current_factor
+        self.y += current_y
+        self.x += current_x
 
     def move_swim(self):
         """Defines the persons swimming choices, will later be defined by personal traits"""
         cell_now = self.xy_to_cell()
-        x, y = cell_now
+        x_cell, y_cell = cell_now
+
+        print(f'x, y before swimming{self.x, self.y}')
 
         "Vermiste laat zich meevoeren en zwemt vervolgens naar het strand terug"
         if self.profile == 1:
-            if self.model.grid.width * 3/5 > x > self.model.grid.width * 2/5:
-                if 0 < y < self.model.grid.height/3:
+            if 23 > x_cell > 18:
+                if 0 < y_cell < 10:
                     pass
 
-            if y >= self.model.grid.height/3:
+            if y_cell >= 10:
                 self.x += 1
                 self.stamina -= 1
 
-            if x >= (self.model.grid.width * 3/5) + 2:
+            if x_cell >= 23 + 2:
                 self.y -= 1
                 self.stamina -= 1
 
@@ -254,6 +258,8 @@ class MissingPerson(Agent):
         if self.profile == 3:
             self.y -= 1
             self.stamina -= 3
+
+        print(f'x, y after swimming{self.x, self.y}')
 
 
 
