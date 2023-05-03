@@ -1,13 +1,14 @@
 import random
 import math
 import numpy as np
+
 from mesa import Model
 from mesa.time import SimultaneousActivation
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
 
-from SarAgent import Unit
-from SarAgent import MissingPerson
+from SarUnit import Unit
+from SarMissingPerson import MissingPerson
 from SarEnvironment import Environment
 import SarServer
 
@@ -53,11 +54,12 @@ class SearchAndRescue(Model):
 
         """Place the missing person in the grid"""
         random.seed(self.seed)
-        pos_mp = (random.randrange(18, 24), random.randrange(0, 10))
+        # pos_mp = (random.randrange(18, 24), random.randrange(5, 10))
+        pos_mp = (random.randrange(30,50), random.randrange(30,60))
 
-        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, self.profile)
+        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self,self.stamina, self.profile)
 
-        self.schedule.add(missing_person)
+        # self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
 
         self.A, self.B, self.C, self.D = self.zoekgebied()

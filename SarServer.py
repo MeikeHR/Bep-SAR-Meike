@@ -5,30 +5,28 @@ from mesa.visualization.UserParam import UserSettableParameter
 import math
 
 from SarModel import SearchAndRescue
-from SarAgent import Unit
+from SarUnit import Unit
 from SarEnvironment import Environment
-from SarAgent import MissingPerson
+from SarMissingPerson import MissingPerson
 
 
 params = {
     "height": 90,
     "width": 60,
-    "search_pattern": UserSettableParameter('choice', "Zoekpatroon", value='Parallel Sweep',
+    "search_pattern": UserSettableParameter('choice', "Zoekpatroon", value='Random Search',
                                             choices=['Parallel Sweep',
                                                      'Expanding Square',
                                                      'Sector Search',
                                                      'Random Search']),
-    "search_radius": UserSettableParameter("slider", "Search radius (in 10m)", 5, 3, 20, 1),
+    "search_radius": UserSettableParameter("slider", "Search radius (in 20m)", 5, 3, 20, 1),
     "max_current": UserSettableParameter("slider", "maximum current in riptide (m/s)", 2.5, 1, 2.5, 0.5),
     "upper_current": UserSettableParameter("slider", "upper current in northerly direction (m/s)", 0.77, 0.41, 0.77, 0.01),
     "stamina": UserSettableParameter("slider", "stamina (-)", 1800, 600, 3600, 200),
-    "profile": UserSettableParameter("slider", "profile (-)", 1, 1, 3, 1),
-    "tijd_melding": UserSettableParameter("slider", "tijd_melding(minuten)", 10, 0, 10, 1),
+    "profile": UserSettableParameter("slider", "profile (-)", 2, 1, 3, 1),
+    "tijd_melding": UserSettableParameter("slider", "tijd_melding(minuten)", 0, 0, 10, 1),
 
 
 }
-
-
 
 
 def portrayal_method(agent):
