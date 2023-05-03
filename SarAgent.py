@@ -189,13 +189,15 @@ class Unit(Agent):
         cell = self.xy_to_cell()
         self.model.grid.move_agent(self, cell)
 
-        print(f"real x: {self.x}, real y: {self.y}, cell position: {cell}")
+        # print(f"real x: {self.x}, real y: {self.y}, cell position: {cell}")
 
 
 class MissingPerson(Agent):
-    def __init__(self, unique_id, x, y, model, stamina=800):
+    def __init__(self, unique_id, x, y, model, profile):
         super().__init__(unique_id, model)
-        self.stamina = stamina
+        self.stamina = self.model.stamina
+        self.profile = profile
+
         self.x = x
         self.y = y
 
@@ -221,13 +223,37 @@ class MissingPerson(Agent):
 
     def move_swim(self):
         """Defines the persons swimming choices, will later be defined by personal traits"""
-        seed = self.model.seed
-        random.seed(seed)
-        self.x += (random.randrange(-10, 10, 1) / 10)
-        self.y += (random.randrange(-10, 10, 1) / 10)
+        cell_now = self.xy_to_cell()
+        x, y = cell_now
+
+        "Vermiste laat zich meevoeren en zwemt vervolgens naar het strand terug"
+        if self.profile == 1:
+            if self.model.grid.width * 3/5 > x > self.model.grid.width * 2/5:
+                if 0 < y < self.model.grid.height/3:
+                    pass
+
+            if y >= self.model.grid.height/3:
+                self.x += 1
+                self.stamina -= 1
+
+            if x >= (self.model.grid.width * 3/5) + 2:
+                self.y -= 1
+                self.stamina -= 1
+
+        if self.profile == 2:
+            seed = self.model.seed
+            random.seed(seed)
+            self.x += (random.randrange(-10, 10, 1) / 10)
+            self.y += (random.randrange(-10, 10, 1) / 10)
+
+        if self.profile == 3:
+            self.y -= 1
+            self.stamina -= 3
+
+
 
     def step(self):
-        if self.stamina != 0:
+        if self.stamina > 0:
             """How will the person move due to the current in the given cell"""
             self.move_current()
             """How will the person move due to its own swimming and choices"""
@@ -235,14 +261,26 @@ class MissingPerson(Agent):
 
             cell = self.xy_to_cell()
             x,y = cell
-            print(x,y, self.model.grid.width)
-            if x >= self.model.grid.width or y >= self.model.grid.height:
-                print("Person left the looking field and will not be found")
+            # print(x,y, self.model.grid.width)
+
+            """Out of Bounds"""
+            if x >= self.model.grid.width or y >= self.model.grid.height or x < 0 :
+                print("Person left the  field and will not be found")
                 self.model.running = False
-            elif x < 0 or y < 0:
-                print("Person left the looking field and will not be found")
+            elif y < 0:
+                print("Person swam back to the beach")
                 self.model.running = False
             else:
                 self.model.grid.move_agent(self, cell)
 
-        self.stamina -= 1
+            """Stamina neemt altijd af, dit zal meer zijn bij slechtere weersomstandigheden"""
+            # Weersomstandigheden toevoegen
+            self.stamina -= 1
+            print(self.stamina)
+        else:
+            self.model.running = False
+            print(f'Person ran out of stamina')
+
+
+
+
