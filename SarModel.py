@@ -1,6 +1,7 @@
 import random
 import math
 import numpy as np
+
 from mesa import Model
 from mesa.time import SimultaneousActivation
 from mesa.space import MultiGrid
@@ -56,7 +57,7 @@ class SearchAndRescue(Model):
         # pos_mp = (random.randrange(18, 24), random.randrange(5, 10))
         pos_mp = (random.randrange(30,50), random.randrange(30,60))
 
-        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, self.profile)
+        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self,self.stamina, self.profile)
 
         # self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)

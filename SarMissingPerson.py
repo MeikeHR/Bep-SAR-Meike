@@ -7,9 +7,9 @@ from SarEnvironment import Environment
 
 
 class MissingPerson(Agent):
-    def __init__(self, unique_id, x, y, model, profile):
+    def __init__(self, unique_id, x, y, model,stamina, profile):
         super().__init__(unique_id, model)
-        self.stamina = self.model.stamina
+        self.stamina = stamina
         self.profile = profile
 
         self.x = x*20
@@ -66,10 +66,6 @@ class MissingPerson(Agent):
             self.y -= 1
             self.stamina -= 3
 
-        # print(f'x, y after swimming{self.x, self.y}')
-
-
-
     def step(self):
         if self.stamina > 0:
             """How will the person move due to the current in the given cell"""
@@ -78,8 +74,7 @@ class MissingPerson(Agent):
             self.move_swim()
 
             cell = self.xy_to_cell()
-            x,y = cell
-            # print(x,y, self.model.grid.width)
+            x, y = cell
 
             """Out of Bounds"""
             if x >= self.model.grid.width or y >= self.model.grid.height or x < 0 :
@@ -95,7 +90,6 @@ class MissingPerson(Agent):
 
             # Weersomstandigheden toevoegen
             self.stamina -= 1
-            # print(self.stamina)
         else:
             self.model.running = False
             print(f'Person ran out of stamina')
