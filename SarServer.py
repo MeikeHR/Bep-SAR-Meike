@@ -13,7 +13,7 @@ from SarMissingPerson import MissingPerson
 params = {
     "height": 90,
     "width": 60,
-    "search_pattern": UserSettableParameter('choice', "Zoekpatroon", value='Parallel Sweep',
+    "search_pattern": UserSettableParameter('choice', "Zoekpatroon", value='Expanding Square',
                                             choices=['Parallel Sweep',
                                                      'Expanding Square',
                                                      'Sector Search',
@@ -27,8 +27,6 @@ params = {
 
 
 }
-
-
 
 
 def portrayal_method(agent):
