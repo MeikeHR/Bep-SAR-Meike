@@ -58,7 +58,7 @@ class Unit(Agent):
             elif self.model.search_pattern == 'Expanding Square':
                 self.move_es_new()
             elif self.model.search_pattern == 'Sector Search':
-                self.move_ss()
+                self.move_ss_new()
             elif self.model.search_pattern == 'Random Search':
                 self.move_rs()
 
@@ -204,21 +204,25 @@ class Unit(Agent):
                     else:
                         self.y += self.speed
 
-    def move_ss(self):
+    def move_ss_new(self):
         """Defines the Sector Search search pattern"""
+
         v_x = self.speed * math.cos(math.radians(self.hoek))
         v_y = self.speed * math.sin(math.radians(self.hoek))
 
-        ticks_kort = 10  # (berekenen)
-        ticks_lang = 20  # (berekenen)
+        hoogte_zoekgebied = (self.model.D[1] - self.model.B[1]) *20
+
+        lange_kant = hoogte_zoekgebied / math.sin(math.radians(60))
+        korte_kant = hoogte_zoekgebied / math.tan(math.radians(60))
+
+        ticks_kort = int(korte_kant / self.speed)  # (berekenen)
+        ticks_lang = int(lange_kant / self.speed)  # (berekenen)
 
         if not self.reached_middle:
             self.go_to_middle()
         else:
             self.tick_ps += 1
-            print(f'eerste: {self.eerste}, baan: {self.baan_SS}, hoek: {self.hoek}, vx, vy ={v_x, v_y}')
             if self.eerste == "JA":
-                print(f'tick: {self.tick_ps}, tot:{ticks_kort}')
                 if self.tick_ps == ticks_kort:
                     self.eerste = "NEE"
                     self.x += v_x
@@ -230,7 +234,6 @@ class Unit(Agent):
                     self.y += v_y
             else:
                 if self.baan_SS == "KORT":
-                    print(f'tick: {self.tick_ps}, tot:{ticks_kort}')
                     if self.tick_ps == ticks_kort:
                         self.x += v_x
                         self.y += v_y
@@ -241,7 +244,6 @@ class Unit(Agent):
                         self.x += v_x
                         self.y += v_y
                 else:
-                    print(f'tick: {self.tick_ps}, tot:{ticks_lang}')
                     if self.tick_ps == ticks_lang:
                         self.x += v_x
                         self.y += v_y
@@ -256,8 +258,8 @@ class Unit(Agent):
         pass
 
     def go_to_middle(self):
-        midden_x = int((self.model.B[0] - self.model.A[0]) / 2)
-        midden_y = int((self.model.D[1] - self.model.B[1]) / 2)
+        midden_x = int((self.model.B[0] + self.model.A[0]) / 2)
+        midden_y = int((self.model.D[1] + self.model.B[1]) / 2)
         midden_zoekgebied = (midden_x, midden_y)
 
         self.move_to(midden_zoekgebied)
