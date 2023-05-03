@@ -206,8 +206,8 @@ class Unit(Agent):
 
     def move_ss(self):
         """Defines the Sector Search search pattern"""
-        v_x = self.speed * math.cos(self.hoek)
-        v_y = self.speed * math.sin(self.hoek)
+        v_x = self.speed * math.cos(math.radians(self.hoek))
+        v_y = self.speed * math.sin(math.radians(self.hoek))
 
         ticks_kort = 10  # (berekenen)
         ticks_lang = 20  # (berekenen)
@@ -216,8 +216,9 @@ class Unit(Agent):
             self.go_to_middle()
         else:
             self.tick_ps += 1
-
+            print(f'eerste: {self.eerste}, baan: {self.baan_SS}, hoek: {self.hoek}, vx, vy ={v_x, v_y}')
             if self.eerste == "JA":
+                print(f'tick: {self.tick_ps}, tot:{ticks_kort}')
                 if self.tick_ps == ticks_kort:
                     self.eerste = "NEE"
                     self.x += v_x
@@ -229,6 +230,7 @@ class Unit(Agent):
                     self.y += v_y
             else:
                 if self.baan_SS == "KORT":
+                    print(f'tick: {self.tick_ps}, tot:{ticks_kort}')
                     if self.tick_ps == ticks_kort:
                         self.x += v_x
                         self.y += v_y
@@ -239,12 +241,13 @@ class Unit(Agent):
                         self.x += v_x
                         self.y += v_y
                 else:
+                    print(f'tick: {self.tick_ps}, tot:{ticks_lang}')
                     if self.tick_ps == ticks_lang:
                         self.x += v_x
                         self.y += v_y
                         self.tick_ps = 0
                         self.hoek += 120
-                        self.baan_SS = "LANG"
+                        self.baan_SS = "KORT"
                     else:
                         self.x += v_x
                         self.y += v_y
