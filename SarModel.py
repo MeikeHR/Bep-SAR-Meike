@@ -1,6 +1,6 @@
 import random
 import math
-
+import numpy as np
 from mesa import Model
 from mesa.time import SimultaneousActivation
 from mesa.space import MultiGrid
@@ -52,12 +52,6 @@ class SearchAndRescue(Model):
             self.grid.place_agent(cell, (x, y))
 
         """Place the missing person in the grid"""
-        # rc_width = self.grid.width / 5
-
-        # random.seed(self.seed)
-        # pos_mp = (random.randrange(int(self.grid.width * 2/5), int(self.grid.width * 3/5)),
-        #           random.randrange(int(self.grid.height / 6), int(self.grid.height / 3)))
-
         random.seed(self.seed)
         pos_mp = (random.randrange(18, 24), random.randrange(0, 10))
 
@@ -67,13 +61,12 @@ class SearchAndRescue(Model):
         self.grid.place_agent(missing_person, pos_mp)
 
         self.A, self.B, self.C, self.D = self.zoekgebied()
+        print(self.A, self.B, self.C, self.D)
 
         """Create the SAR Unit"""
-        for i in range(self.num_units):
-            starting_pos_unit = [1,1]
-            a = Unit(i, i*10, i*10, self)
-            self.schedule.add(a)
-            self.grid.place_agent(a, (i*10, i*10))
+        unit = Unit(1,self.A[0], self.A[1],self)
+        self.schedule.add(unit)
+        self.grid.place_agent(unit, (self.A[0], self.A[1]))
 
         self.datacollector = DataCollector(model_reporters={}, agent_reporters={})
 
@@ -122,8 +115,17 @@ class SearchAndRescue(Model):
         D[1] += a_tijd
         C[1] += a_tijd
 
+        A[0] = int(A[0] / 20)
+        A[1] = int(A[1] / 20)
+        B[0] = int(B[0] / 20)
+        B[1] = int(B[1] / 20)
+        C[0] = int(C[0] / 20)
+        C[1] = int(C[1] / 20)
+        D[0] = int(D[0] / 20)
+        D[1] = int(D[1] / 20)
+
         print(f"Zoekgebied - A: {A},B: {B}, C:{C}, D: {D}")
-        return A, B, C, D
+        return A,B,C,D
 
 
     def step(self):
