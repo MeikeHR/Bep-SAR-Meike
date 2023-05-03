@@ -13,7 +13,7 @@ from SarMissingPerson import MissingPerson
 params = {
     "height": 90,
     "width": 60,
-    "search_pattern": UserSettableParameter('choice', "Zoekpatroon", value='Expanding Square',
+    "search_pattern": UserSettableParameter('choice', "Zoekpatroon", value='Sector Search',
                                             choices=['Parallel Sweep',
                                                      'Expanding Square',
                                                      'Sector Search',

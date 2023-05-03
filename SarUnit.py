@@ -36,6 +36,11 @@ class Unit(Agent):
         self.factor_ES = 1
         self.baan = "EERSTE"
 
+        "Sector search variables"
+        self.hoek = 60
+        self.eerste = "JA"
+        self.baan_SS = "KORT"
+
         self.reached_middle = False
 
     def xy_to_cell(self):
@@ -161,28 +166,18 @@ class Unit(Agent):
                 self.reached_middle = True
 
     def move_es_new(self):
-        print(self.reached_middle)
         S = self.model.search_radius * 20
 
         if not self.reached_middle:
-            midden_x = int((self.model.B[0] - self.model.A[0])/2)
-            midden_y = int((self.model.D[1] - self.model.B[1])/2)
-            midden_zoekgebied = (midden_x,midden_y)
-            # print(midden_zoekgebied)
-            # print(self.x_cell, self.y_cell)
-            self.move_to(midden_zoekgebied)
-            # print(f'neighborhoor: {self.model.grid.get_neighborhood((self.x_cell, self.y_cell), moore=True, include_center=False, radius=1)}')
-            if midden_zoekgebied in self.model.grid.get_neighborhood((self.x_cell, self.y_cell), moore=True, include_center=False, radius=1):
-                self.reached_middle = True
+            self.go_to_middle()
         else:
             self.tick_ps += 1
             ticks = int(S * self.factor_ES / self.speed)
 
-            print(f'tick: {self.tick_ps}, needed ticks: {ticks} , factor: {self.factor_ES}, baan: {self.baan}')
+            # print(f'tick: {self.tick_ps}, needed ticks: {ticks} , factor: {self.factor_ES}, baan: {self.baan}')
 
             if self.tick_ps == ticks:
                 if self.baan == "EERSTE":
-                    print(f'baan wordt naar tweede gezet want {self.tick_ps} == {ticks}')
                     self.baan = "TWEEDE"
                     self.tick_ps = 0
                     if self.factor_ES % 2 == 0:
@@ -211,11 +206,62 @@ class Unit(Agent):
 
     def move_ss(self):
         """Defines the Sector Search search pattern"""
-        pass
+        v_x = self.speed * math.cos(self.hoek)
+        v_y = self.speed * math.sin(self.hoek)
 
+        ticks_kort = 10  # (berekenen)
+        ticks_lang = 20  # (berekenen)
+
+        if not self.reached_middle:
+            self.go_to_middle()
+        else:
+            self.tick_ps += 1
+
+            if self.eerste == "JA":
+                if self.tick_ps == ticks_kort:
+                    self.eerste = "NEE"
+                    self.x += v_x
+                    self.y += v_y
+                    self.tick_ps = 0
+                    self.hoek += 120
+                else:
+                    self.x += v_x
+                    self.y += v_y
+            else:
+                if self.baan_SS == "KORT":
+                    if self.tick_ps == ticks_kort:
+                        self.x += v_x
+                        self.y += v_y
+                        self.tick_ps = 0
+                        self.hoek += 120
+                        self.baan_SS = "LANG"
+                    else:
+                        self.x += v_x
+                        self.y += v_y
+                else:
+                    if self.tick_ps == ticks_lang:
+                        self.x += v_x
+                        self.y += v_y
+                        self.tick_ps = 0
+                        self.hoek += 120
+                        self.baan_SS = "LANG"
+                    else:
+                        self.x += v_x
+                        self.y += v_y
     def move_rs(self):
         """Defines the Random Search pattern"""
         pass
+
+    def go_to_middle(self):
+        midden_x = int((self.model.B[0] - self.model.A[0]) / 2)
+        midden_y = int((self.model.D[1] - self.model.B[1]) / 2)
+        midden_zoekgebied = (midden_x, midden_y)
+
+        self.move_to(midden_zoekgebied)
+        if midden_zoekgebied in self.model.grid.get_neighborhood((self.x_cell, self.y_cell), moore=True,
+                                                                 include_center=False, radius=1):
+            self.reached_middle = True
+
 
     def look(self, radius):
         # get neighbors radius range
@@ -290,7 +336,7 @@ class Unit(Agent):
             """How does the unit move according to the search state (still looking or moving to a position)"""
             self.move_search()
             """How does the unit move due to the current"""
-            self.move_current()
+            # self.move_current()
 
             cell = self.xy_to_cell()
             self.model.grid.move_agent(self, cell)
