@@ -6,8 +6,8 @@ from mesa.time import SimultaneousActivation
 from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
 
-from SarAgent import Unit
-from SarAgent import MissingPerson
+from SarUnit import Unit
+from SarMissingPerson import MissingPerson
 from SarEnvironment import Environment
 import SarServer
 
