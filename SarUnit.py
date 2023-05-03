@@ -32,6 +32,10 @@ class Unit(Agent):
         self.lang_kort_ps = "LANG"
         self.richting_ps = 'RECHTS'
 
+        "Expanding square variables"
+        self.factor_ES = 1
+        self.baan = "EERSTE"
+
         self.reached_middle = False
 
     def xy_to_cell(self):
@@ -42,12 +46,12 @@ class Unit(Agent):
     def move_search(self):
         pos_mp = self.look(self.model.search_radius)
         if pos_mp is not ():
-            self.move_to_new(pos_mp)
+            self.move_to(pos_mp)
         else:
             if self.model.search_pattern == 'Parallel Sweep':
                 self.move_ps_new()
             elif self.model.search_pattern == 'Expanding Square':
-                self.move_es()
+                self.move_es_new()
             elif self.model.search_pattern == 'Sector Search':
                 self.move_ss()
             elif self.model.search_pattern == 'Random Search':
@@ -109,7 +113,6 @@ class Unit(Agent):
 
         print(f'slag:{self.lang_kort_ps}, richting: {self.richting_ps}')
 
-
         ticks_lang = int((((self.model.B[0] - self.model.A[0])*20) / self.speed))
         ticks_kort = int(track_spacing*20 / self.speed)
 
@@ -144,9 +147,6 @@ class Unit(Agent):
             else:
                 self.y += self.speed
 
-        """"D"""
-
-
     def move_es(self):
         """Defines the Expanding Square search pattern"""
 
@@ -159,6 +159,55 @@ class Unit(Agent):
             self.move_to(middle_grid)
             if middle_grid in self.model.grid.get_neighborhood(self.xy_to_cell(), moore=True, include_center=False, radius=1):
                 self.reached_middle = True
+
+    def move_es_new(self):
+        print(self.reached_middle)
+        S = self.model.search_radius * 20
+
+        if not self.reached_middle:
+            midden_x = int((self.model.B[0] - self.model.A[0])/2)
+            midden_y = int((self.model.D[1] - self.model.B[1])/2)
+            midden_zoekgebied = (midden_x,midden_y)
+            # print(midden_zoekgebied)
+            # print(self.x_cell, self.y_cell)
+            self.move_to(midden_zoekgebied)
+            # print(f'neighborhoor: {self.model.grid.get_neighborhood((self.x_cell, self.y_cell), moore=True, include_center=False, radius=1)}')
+            if midden_zoekgebied in self.model.grid.get_neighborhood((self.x_cell, self.y_cell), moore=True, include_center=False, radius=1):
+                self.reached_middle = True
+        else:
+            self.tick_ps += 1
+            ticks = int(S * self.factor_ES / self.speed)
+
+            print(f'tick: {self.tick_ps}, needed ticks: {ticks} , factor: {self.factor_ES}, baan: {self.baan}')
+
+            if self.tick_ps == ticks:
+                if self.baan == "EERSTE":
+                    print(f'baan wordt naar tweede gezet want {self.tick_ps} == {ticks}')
+                    self.baan = "TWEEDE"
+                    self.tick_ps = 0
+                    if self.factor_ES % 2 == 0:
+                        self.x += self.speed
+                    else:
+                        self.x -= self.speed
+                else:
+                    self.baan = "EERSTE"
+                    self.tick_ps = 0
+                    self.factor_ES += 1
+                    if self.factor_ES % 2 == 0:
+                        self.y -= self.speed
+                    else:
+                        self.y += self.speed
+            else:
+                if self.baan == "EERSTE":
+                    if self.factor_ES % 2 == 0:
+                        self.x += self.speed
+                    else:
+                        self.x -= self.speed
+                else:
+                    if self.factor_ES % 2 == 0:
+                        self.y -= self.speed
+                    else:
+                        self.y += self.speed
 
     def move_ss(self):
         """Defines the Sector Search search pattern"""
@@ -186,7 +235,7 @@ class Unit(Agent):
             return position_missing_person
         return ()
 
-    def move_to_new(self, cell):
+    def move_to(self, cell):
         """With a given position, try moving there (shortest path).
         If the position is one of the agents neighbors, stop the model (running = False)"""
         position = self.xy_to_cell()
