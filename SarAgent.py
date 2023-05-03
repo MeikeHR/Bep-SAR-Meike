@@ -22,6 +22,8 @@ class Unit(Agent):
         self.going_left = False
         self.step_nr = 0
 
+        self.tick = 0
+
         self.reached_middle = False
 
     def xy_to_cell(self):
@@ -175,21 +177,24 @@ class Unit(Agent):
                 self.model.running = False
 
     def step(self):
-        cell_new = self.xy_to_cell()
-        loc = self.model.grid.get_cell_list_contents(cell_new)
-        for obj in loc:
-            if isinstance(obj, Environment):
-                obj.path = True
+        self.tick += 1
+        if self.tick > self.model.tijd_melding:
+            cell_new = self.xy_to_cell()
+            loc = self.model.grid.get_cell_list_contents(cell_new)
+            for obj in loc:
+                if isinstance(obj, Environment):
+                    obj.path = True
 
-        """How does the unit move according to the search state (still looking or moving to a position)"""
-        self.move_search()
-        """How does the unit move due to the current"""
-        self.move_current()
+            """How does the unit move according to the search state (still looking or moving to a position)"""
+            self.move_search()
+            """How does the unit move due to the current"""
+            self.move_current()
 
-        cell = self.xy_to_cell()
-        self.model.grid.move_agent(self, cell)
+            cell = self.xy_to_cell()
+            self.model.grid.move_agent(self, cell)
 
-        # print(f"real x: {self.x}, real y: {self.y}, cell position: {cell}")
+            # print(f"real x: {self.x}, real y: {self.y}, cell position: {cell}")
+
 
 
 class MissingPerson(Agent):
