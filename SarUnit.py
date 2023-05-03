@@ -41,6 +41,11 @@ class Unit(Agent):
         self.eerste = "JA"
         self.baan_SS = "KORT"
 
+        "Random search variables"
+        max_ticks = int(((self.model.D[1] - self.model.B[1]) * 20 )/self.speed)
+        self.ticks_rs = random.randrange(20, max_ticks)
+        self.hoek_rs = random.randrange(0, 90)
+
         self.reached_middle = False
 
     def xy_to_cell(self):
@@ -54,11 +59,11 @@ class Unit(Agent):
             self.move_to(pos_mp)
         else:
             if self.model.search_pattern == 'Parallel Sweep':
-                self.move_ps_new()
+                self.move_ps()
             elif self.model.search_pattern == 'Expanding Square':
-                self.move_es_new()
+                self.move_es()
             elif self.model.search_pattern == 'Sector Search':
-                self.move_ss_new()
+                self.move_ss()
             elif self.model.search_pattern == 'Random Search':
                 self.move_rs()
 
@@ -74,45 +79,7 @@ class Unit(Agent):
     """The following functions will define the way of movement through the water due to the chosen search pattern."""
 
     def move_ps(self):
-        """
-        1. Is the agent still looking or did they spot the missing person?
-        2. After that, check in what direction the boat should be moving and change the booleans accordingly
-        3. Lastly, check these booleans and perform the actual movement of the agent
-        """
-
-        # 1
-        max_x = self.model.grid.width - 1
-        steps_up = self.model.grid.height / 6
-
-        # 2
-        if self.going_left is True and self.going_up is True and self.step_nr == steps_up:
-            self.going_left = False
-            self.going_up = False
-            self.going_right = True
-            self.step_nr = 0
-        if self.going_right is True and self.going_up is True and self.step_nr == steps_up:
-            self.going_left = True
-            self.going_up = False
-            self.going_right = False
-            self.step_nr = 0
-
-        if self.step_nr == max_x:
-            self.going_up = True
-            self.step_nr = 0
-
-        # 3
-        if self.going_up is False:
-            if self.going_left is True:
-                self.x -= self.speed
-                self.step_nr += 1
-            elif self.going_right is True:
-                self.x += self.speed
-                self.step_nr += 1
-        else:
-            self.y += self.speed
-            self.step_nr += 1
-
-    def move_ps_new(self):
+        """Defines the Parallel Sweep search pattern"""
         self.tick_ps += 1
         track_spacing = self.model.search_radius * 2
 
@@ -155,17 +122,6 @@ class Unit(Agent):
     def move_es(self):
         """Defines the Expanding Square search pattern"""
 
-        # First move to the middle, then make slagen van bepaalde lengte, + vaste lengte
-        middle_grid = (self.model.grid.width // 2, self.model.grid.height // 2)
-        print(middle_grid)
-        if self.reached_middle:
-            self.move_ps()
-        else:
-            self.move_to(middle_grid)
-            if middle_grid in self.model.grid.get_neighborhood(self.xy_to_cell(), moore=True, include_center=False, radius=1):
-                self.reached_middle = True
-
-    def move_es_new(self):
         S = self.model.search_radius * 20
 
         if not self.reached_middle:
@@ -204,7 +160,7 @@ class Unit(Agent):
                     else:
                         self.y += self.speed
 
-    def move_ss_new(self):
+    def move_ss(self):
         """Defines the Sector Search search pattern"""
 
         v_x = self.speed * math.cos(math.radians(self.hoek))
@@ -253,9 +209,32 @@ class Unit(Agent):
                     else:
                         self.x += v_x
                         self.y += v_y
+
     def move_rs(self):
         """Defines the Random Search pattern"""
-        pass
+        self.tick_ps += 1
+
+        v_x = self.speed * math.cos(math.radians(self.hoek_rs))
+        v_y = self.speed * math.sin(math.radians(self.hoek_rs))
+
+        print(f'ticknr: {self.tick_ps}, tot tick: {self.ticks_rs}, met hoek {self.hoek_rs}')
+
+        if self.tick_ps == self.ticks_rs:
+            min_ticks = 0 # bepalen
+            max_ticks = 30 # bepalen
+            self.ticks_rs = random.randrange(min_ticks, max_ticks)
+
+            min_hoek = 20 # berekenen
+            max_hoek = 80 # berekenen
+            self.hoek_rs += random.randrange(min_hoek, max_hoek)
+
+            self.tick_ps = 0
+
+            self.x += v_x
+            self.y += v_y
+        else:
+            self.x += v_x
+            self.y += v_y
 
     def go_to_middle(self):
         midden_x = int((self.model.B[0] + self.model.A[0]) / 2)
@@ -341,7 +320,7 @@ class Unit(Agent):
             """How does the unit move according to the search state (still looking or moving to a position)"""
             self.move_search()
             """How does the unit move due to the current"""
-            # self.move_current()
+            self.move_current()
 
             cell = self.xy_to_cell()
             self.model.grid.move_agent(self, cell)
