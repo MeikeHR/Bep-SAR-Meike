@@ -1,6 +1,4 @@
-import random
 import math
-import numpy as np
 
 from mesa import Model
 from mesa.time import SimultaneousActivation
@@ -10,7 +8,6 @@ from mesa.datacollection import DataCollector
 from SarUnit import Unit
 from SarMissingPerson import MissingPerson
 from SarEnvironment import Environment
-import SarServer
 
 import random
 
@@ -127,8 +124,7 @@ class SearchAndRescue(Model):
         D[1] = int(D[1] / 20)
 
         print(f"Zoekgebied - A: {A},B: {B}, C:{C}, D: {D}")
-        return A,B,C,D
-
+        return A, B, C, D
 
     def step(self):
         if self.running:

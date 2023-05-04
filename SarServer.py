@@ -38,11 +38,11 @@ def portrayal_method(agent):
     blue = '#%02x%02x%02x' % (rg_init, rg_init, 255)
 
     portrayal = {"Shape": "rect",
-                 "w": 1,"h": 1,
+                 "w": 1, "h": 1,
                  "Color": blue,
                  "Filled": "true",
                  "Layer": 0
-    }
+                 }
 
     if isinstance(agent, Environment):
 

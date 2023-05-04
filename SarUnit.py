@@ -66,10 +66,10 @@ class Unit(Agent):
                 self.move_rs()
 
     def move_current(self):
-        for object in self.model.grid.get_cell_list_contents(self.xy_to_cell()):
-            if isinstance(object, Environment):
-                current_y = object.current_y
-                current_x = object.current_x
+        for obj in self.model.grid.get_cell_list_contents(self.xy_to_cell()):
+            if isinstance(obj, Environment):
+                current_y = obj.current_y
+                current_x = obj.current_x
 
         self.y += current_y
         self.x += current_x
@@ -85,7 +85,6 @@ class Unit(Agent):
 
         ticks_lang = int((((self.model.B[0] - self.model.A[0])*20) / self.speed))
         ticks_kort = int(track_spacing*20 / self.speed)
-
 
         if self.lang_kort_ps == "LANG":
             "Bij het eind?"
@@ -120,13 +119,13 @@ class Unit(Agent):
     def move_es(self):
         """Defines the Expanding Square search pattern"""
 
-        S = self.model.search_radius * 20
+        afstand = self.model.search_radius * 20
 
         if not self.reached_middle:
             self.go_to_middle()
         else:
             self.tick_ps += 1
-            ticks = int(S * self.factor_ES / self.speed)
+            ticks = int(afstand * self.factor_ES / self.speed)
 
             # print(f'tick: {self.tick_ps}, needed ticks: {ticks} , factor: {self.factor_ES}, baan: {self.baan}')
 
@@ -164,7 +163,7 @@ class Unit(Agent):
         v_x = self.speed * math.cos(math.radians(self.hoek))
         v_y = self.speed * math.sin(math.radians(self.hoek))
 
-        hoogte_zoekgebied = (self.model.D[1] - self.model.B[1]) *20
+        hoogte_zoekgebied = (self.model.D[1] - self.model.B[1]) * 20
 
         lange_kant = hoogte_zoekgebied / math.sin(math.radians(60))
         korte_kant = hoogte_zoekgebied / math.tan(math.radians(60))
@@ -224,7 +223,6 @@ class Unit(Agent):
         # y = int(self.new_point[1])
         # cell_new_point = (x,y)
 
-
         print(f'cell: x,y = {self.new_point[0], self.new_point[1]} en zelf: x,y = {self.xy_to_cell()}')
 
         self.move_to(self.new_point)
@@ -244,7 +242,6 @@ class Unit(Agent):
         if midden_zoekgebied in self.model.grid.get_neighborhood((self.x_cell, self.y_cell), moore=True,
                                                                  include_center=False, radius=1):
             self.reached_middle = True
-
 
     def look(self, radius):
         # get neighbors radius range
