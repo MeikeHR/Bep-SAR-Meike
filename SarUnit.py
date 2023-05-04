@@ -46,6 +46,10 @@ class Unit(Agent):
         self.ticks_rs = random.randrange(20, max_ticks)
         self.hoek_rs = random.randrange(0, 90)
 
+        random_x = random.randrange(self.model.A[0], self.model.B[0])
+        random_y = random.randrange(self.model.A[1], self.model.C[1])
+        self.new_point = (random_x, random_y)
+
         self.reached_middle = False
 
     def xy_to_cell(self):
@@ -65,7 +69,7 @@ class Unit(Agent):
             elif self.model.search_pattern == 'Sector Search':
                 self.move_ss()
             elif self.model.search_pattern == 'Random Search':
-                self.move_rs()
+                self.move_rs_new()
 
     def move_current(self):
         for object in self.model.grid.get_cell_list_contents(self.xy_to_cell()):
@@ -235,6 +239,33 @@ class Unit(Agent):
         else:
             self.x += v_x
             self.y += v_y
+
+    def move_rs_new(self):
+        """Defines the Random Search pattern"""
+
+        "Ëventueel stroming toevoegen. Checken of boot wel dichterbij cell komt als ze allebei in y-richting bewegen"
+        # for object in self.model.grid.get_cell_list_contents(self.xy_to_cell()):
+        #     if isinstance(object, Environment):
+        #         current_y = object.current_y
+        #         current_x = object.current_x
+        #
+        # self.new_point[1] += current_y
+        # self.new_point[0] += current_x
+        #
+        # x = int(self.new_point[0])
+        # y = int(self.new_point[1])
+        # cell_new_point = (x,y)
+
+
+        print(f'cell: x,y = {self.new_point[0], self.new_point[1]} en zelf: x,y = {self.xy_to_cell()}')
+
+        self.move_to(self.new_point)
+
+        if self.new_point in self.model.grid.get_neighborhood((self.x_cell, self.y_cell), moore=True,
+                                                                 include_center=False, radius=1):
+            random_x = random.randrange(self.model.A[0], self.model.B[0])
+            random_y = random.randrange(self.model.A[1], self.model.C[1])
+            self.new_point = (random_x, random_y)
 
     def go_to_middle(self):
         midden_x = int((self.model.B[0] + self.model.A[0]) / 2)
