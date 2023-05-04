@@ -12,6 +12,8 @@ class MissingPerson(Agent):
         self.stamina = stamina
         self.profile = profile
         self.swimming_speed = swimming_speed
+        self.wind = self.model.wind
+        self.wind_richting = self.model.wind_richting
 
         self.x = x*20
         self.y = y*20
@@ -32,7 +34,6 @@ class MissingPerson(Agent):
                 current_y = obj.current_y
                 current_x = obj.current_x
 
-
         self.y += current_y
         self.x += current_x
 
@@ -48,14 +49,16 @@ class MissingPerson(Agent):
             if 23 > x_cell > 18:
                 if 0 < y_cell < 10:
                     pass
-
-            if y_cell >= 10:
+            elif y_cell >= 10 and 23 + 2 > x_cell > 18 - 2:
                 self.x += self.swimming_speed
                 self.stamina -= 1
-
-            if x_cell >= 23 + 2:
+                print(f'zwemsnelheid: {self.swimming_speed}, x: {self.x}, y: {self.y}')
+            else:
                 self.y -= self.swimming_speed
                 self.stamina -= 1
+                print(f'INELSE: zwemsnelheid: {self.swimming_speed}, x: {self.x}, y: {self.y}')
+            print(f"profile = {self.profile}, y_cell = {y_cell}, x_cell = {x_cell}")
+
         """Vermiste persoon zwemt in paniek willekeurig rond"""
         if self.profile == 2:
             seed = self.model.seed + self.stamina
@@ -70,22 +73,37 @@ class MissingPerson(Agent):
             self.stamina -= 3
 
     def move_wind(self):
-        # self.model.wind
-        # x en y richting
-        # in deze stap --> wind specifieke invloed (randomizerrr)
-        # windsnelheid = 8.5, invloed is 0.80%
-        pass
+        seed = self.model.seed + self.stamina
+        # random.seed(seed)
 
+        if self.wind_richting == "NOORD":
+            graden = 180
+        else:
+            graden = 0
+
+        factor = random.randrange(70, 90) / 10000
+        leeway_speed = self.wind * factor
+
+        richting = random.randrange((graden - 20), (graden + 20))
+        leeway_x = leeway_speed * math.cos(math.radians(richting))
+        leeway_y = leeway_speed * math.sin(math.radians(richting))
+
+        self.x += leeway_x
+        self.y += leeway_y
+
+        print(f'richting: {self.wind_richting}, snelheid: {self.wind}')
+        print(f'orig graden: {graden}, richting_stap: {richting}graden, factor: {factor}')
+        print(f'x_meters {leeway_x}, y_meters {leeway_y}')
 
     def step(self):
         print(f'stamina: {self.stamina}')
         if self.stamina > 0:
             """How will the person move due to the current in the given cell"""
-            self.move_current()
+            # self.move_current()
             """How will the person move due to its own swimming and choices"""
             self.move_swim()
             """How will the person move due to the wind in the model"""
-            self.move_wind()
+            # self.move_wind()
 
             cell = self.xy_to_cell()
             x, y = cell
@@ -101,8 +119,8 @@ class MissingPerson(Agent):
                 self.model.grid.move_agent(self, cell)
 
             """Stamina neemt altijd af, dit zal meer zijn bij slechtere weersomstandigheden"""
-            # Weersomstandigheden toevoegen
-            self.stamina -= 1
+            stamina_stap = (self.wind - 7)/3 + 1
+            self.stamina -= stamina_stap
         else:
             self.model.running = False
             print(f'Person ran out of stamina')

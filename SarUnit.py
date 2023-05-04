@@ -213,18 +213,6 @@ class Unit(Agent):
         print(self.model.seed)
 
         "Ëventueel stroming toevoegen. Checken of boot wel dichterbij cell komt als ze allebei in y-richting bewegen"
-        # for object in self.model.grid.get_cell_list_contents(self.xy_to_cell()):
-        #     if isinstance(object, Environment):
-        #         current_y = object.current_y
-        #         current_x = object.current_x
-        #
-        # self.new_point[1] += current_y
-        # self.new_point[0] += current_x
-        #
-        # x = int(self.new_point[0])
-        # y = int(self.new_point[1])
-        # cell_new_point = (x,y)
-
         print(f'cell: x,y = {self.new_point} en zelf: x,y = {self.xy_to_cell()}')
 
         self.move_to(self.new_point)

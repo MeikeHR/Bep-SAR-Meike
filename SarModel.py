@@ -21,10 +21,12 @@ class SearchAndRescue(Model):
                  search_radius=3,
                  max_current=1.5,
                  upper_current=0.5,
+                 wind=8.5,
                  stamina=200,
                  profile=1,
                  swimming_speed=0.4,
                  tijd_melding=10,
+                 wind_richting='ZUID',
                  # seed=205140,
                  seed=random.randint(0,50000)
                  ):
@@ -35,10 +37,14 @@ class SearchAndRescue(Model):
         self.num_units = num_units
         self.max_current = max_current
         self.upper_current = upper_current
+        self.wind=wind
+        self.wind_richting = wind_richting
         # self.stamina = stamina
         # self.profile = profile
         self.seed = seed
         self.tijd_melding_sec = tijd_melding * 60
+
+        self.zicht = self.wind / 2
 
         print(f'tijd {tijd_melding} * 60 ={self.tijd_melding_sec}')
 
@@ -67,7 +73,7 @@ class SearchAndRescue(Model):
 
         """Create the SAR Unit"""
         unit = Unit(1,self.A[0], self.A[1],self)
-        self.schedule.add(unit)
+        # self.schedule.add(unit)
         self.grid.place_agent(unit, (self.A[0], self.A[1]))
 
         self.datacollector = DataCollector(model_reporters={}, agent_reporters={})
