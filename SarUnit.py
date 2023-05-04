@@ -16,14 +16,12 @@ class Unit(Agent):
 
         self.x_cell, self.y_cell = self.xy_to_cell()
 
-
         self.speed = 12.86
 
         self.going_up = False
         self.going_right = True
         self.going_left = False
         self.step_nr = 0
-
 
         self.tick = 0
 
@@ -42,10 +40,6 @@ class Unit(Agent):
         self.baan_SS = "KORT"
 
         "Random search variables"
-        max_ticks = int(((self.model.D[1] - self.model.B[1]) * 20 )/self.speed)
-        self.ticks_rs = random.randrange(20, max_ticks)
-        self.hoek_rs = random.randrange(0, 90)
-
         random_x = random.randrange(self.model.A[0], self.model.B[0])
         random_y = random.randrange(self.model.A[1], self.model.C[1])
         self.new_point = (random_x, random_y)
@@ -69,7 +63,7 @@ class Unit(Agent):
             elif self.model.search_pattern == 'Sector Search':
                 self.move_ss()
             elif self.model.search_pattern == 'Random Search':
-                self.move_rs_new()
+                self.move_rs()
 
     def move_current(self):
         for object in self.model.grid.get_cell_list_contents(self.xy_to_cell()):
@@ -215,32 +209,6 @@ class Unit(Agent):
                         self.y += v_y
 
     def move_rs(self):
-        """Defines the Random Search pattern"""
-        self.tick_ps += 1
-
-        v_x = self.speed * math.cos(math.radians(self.hoek_rs))
-        v_y = self.speed * math.sin(math.radians(self.hoek_rs))
-
-        print(f'ticknr: {self.tick_ps}, tot tick: {self.ticks_rs}, met hoek {self.hoek_rs}')
-
-        if self.tick_ps == self.ticks_rs:
-            min_ticks = 0 # bepalen
-            max_ticks = 30 # bepalen
-            self.ticks_rs = random.randrange(min_ticks, max_ticks)
-
-            min_hoek = 20 # berekenen
-            max_hoek = 80 # berekenen
-            self.hoek_rs += random.randrange(min_hoek, max_hoek)
-
-            self.tick_ps = 0
-
-            self.x += v_x
-            self.y += v_y
-        else:
-            self.x += v_x
-            self.y += v_y
-
-    def move_rs_new(self):
         """Defines the Random Search pattern"""
 
         "Ëventueel stroming toevoegen. Checken of boot wel dichterbij cell komt als ze allebei in y-richting bewegen"
