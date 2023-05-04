@@ -40,6 +40,7 @@ class Unit(Agent):
         self.baan_SS = "KORT"
 
         "Random search variables"
+        random.seed(self.model.seed)
         random_x = random.randrange(self.model.A[0], self.model.B[0])
         random_y = random.randrange(self.model.A[1], self.model.C[1])
         self.new_point = (random_x, random_y)
@@ -53,7 +54,7 @@ class Unit(Agent):
 
     def move_search(self):
         pos_mp = self.look(self.model.search_radius)
-        if pos_mp is not ():
+        if pos_mp != ():
             self.move_to(pos_mp)
         else:
             if self.model.search_pattern == 'Parallel Sweep':
@@ -209,6 +210,7 @@ class Unit(Agent):
 
     def move_rs(self):
         """Defines the Random Search pattern"""
+        print(self.model.seed)
 
         "Ëventueel stroming toevoegen. Checken of boot wel dichterbij cell komt als ze allebei in y-richting bewegen"
         # for object in self.model.grid.get_cell_list_contents(self.xy_to_cell()):
@@ -223,15 +225,20 @@ class Unit(Agent):
         # y = int(self.new_point[1])
         # cell_new_point = (x,y)
 
-        print(f'cell: x,y = {self.new_point[0], self.new_point[1]} en zelf: x,y = {self.xy_to_cell()}')
+        print(f'cell: x,y = {self.new_point} en zelf: x,y = {self.xy_to_cell()}')
 
         self.move_to(self.new_point)
 
         if self.new_point in self.model.grid.get_neighborhood((self.x_cell, self.y_cell), moore=True,
                                                                  include_center=False, radius=1):
+            seed = self.model.seed + self.tick
+            random.seed(seed)
             random_x = random.randrange(self.model.A[0], self.model.B[0])
+            print(f'x:random range uit: {self.model.A[0], self.model.B[0]}')
             random_y = random.randrange(self.model.A[1], self.model.C[1])
+            print(f'y: random range uit: {self.model.A[1], self.model.C[1]}')
             self.new_point = (random_x, random_y)
+            print(f'nwe_point is nu: {self.new_point}')
 
     def go_to_middle(self):
         midden_x = int((self.model.B[0] + self.model.A[0]) / 2)
@@ -304,6 +311,7 @@ class Unit(Agent):
                 self.model.running = False
 
     def step(self):
+        print(f'{self.tick} > {self.model.tijd_melding_sec}')
         self.tick += 1
         self.x_cell, self.y_cell = self.xy_to_cell()
         if self.tick > self.model.tijd_melding_sec:

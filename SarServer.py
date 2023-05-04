@@ -21,8 +21,9 @@ params = {
     "search_radius": UserSettableParameter("slider", "Search radius (in 20m)", 5, 3, 20, 1),
     "max_current": UserSettableParameter("slider", "maximum current in riptide (m/s)", 2.5, 1, 2.5, 0.5),
     "upper_current": UserSettableParameter("slider", "upper current in northerly direction (m/s)", 0.77, 0.41, 0.77, 0.01),
-    "stamina": UserSettableParameter("slider", "stamina (-)", 1800, 600, 3600, 200),
+    "stamina": UserSettableParameter("slider", "stamina (-)", 1200, 900, 3600, 100),
     "profile": UserSettableParameter("slider", "profile (-)", 2, 1, 3, 1),
+    "swimming_speed": UserSettableParameter("slider", "swimming speed", 0.4, 0.2, 0.6, 0.1),
     "tijd_melding": UserSettableParameter("slider", "tijd_melding(minuten)", 0, 0, 10, 1),
 
 

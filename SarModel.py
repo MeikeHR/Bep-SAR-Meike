@@ -23,6 +23,7 @@ class SearchAndRescue(Model):
                  upper_current=0.5,
                  stamina=200,
                  profile=1,
+                 swimming_speed=0.4,
                  tijd_melding=10,
                  # seed=205140,
                  seed=random.randint(0,50000)
@@ -34,10 +35,12 @@ class SearchAndRescue(Model):
         self.num_units = num_units
         self.max_current = max_current
         self.upper_current = upper_current
-        self.stamina = stamina
-        self.profile = profile
+        # self.stamina = stamina
+        # self.profile = profile
         self.seed = seed
         self.tijd_melding_sec = tijd_melding * 60
+
+        print(f'tijd {tijd_melding} * 60 ={self.tijd_melding_sec}')
 
 
         self.grid = MultiGrid(height, width, torus=False)
@@ -52,11 +55,11 @@ class SearchAndRescue(Model):
         """Place the missing person in the grid"""
         random.seed(self.seed)
         # pos_mp = (random.randrange(18, 24), random.randrange(5, 10))
-        pos_mp = (random.randrange(30,50), random.randrange(30,60))
+        pos_mp = (random.randrange(30,60), random.randrange(30,50))
 
-        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self,self.stamina, self.profile)
+        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self,stamina, profile, swimming_speed)
 
-        # self.schedule.add(missing_person)
+        self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
 
         self.A, self.B, self.C, self.D = self.zoekgebied()
