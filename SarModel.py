@@ -1,6 +1,4 @@
-import random
 import math
-import numpy as np
 
 from mesa import Model
 from mesa.time import SimultaneousActivation
@@ -10,7 +8,6 @@ from mesa.datacollection import DataCollector
 from SarUnit import Unit
 from SarMissingPerson import MissingPerson
 from SarEnvironment import Environment
-import SarServer
 
 import random
 
@@ -21,27 +18,32 @@ class SearchAndRescue(Model):
                  width=90, height=60,
                  search_pattern='Parallel Sweep',
                  num_units=1,
-                 search_radius=3,
+                 search_radius=125,
                  max_current=1.5,
                  upper_current=0.5,
+                 wind=8,
                  stamina=200,
                  profile=1,
+                 swimming_speed=0.4,
                  tijd_melding=10,
+                 wind_richting='ZUID',
                  # seed=205140,
                  seed=random.randint(0,50000)
                  ):
         super().__init__()
 
         self.search_pattern = search_pattern
-        self.search_radius = search_radius
         self.num_units = num_units
         self.max_current = max_current
         self.upper_current = upper_current
-        self.stamina = stamina
-        self.profile = profile
+        self.wind = wind
+        self.wind_richting = wind_richting
         self.seed = seed
-        self.tijd_melding_sec = tijd_melding * 60
 
+        self.search_radius = int(search_radius / 20)
+        self.tijd_melding_sec = tijd_melding * 60
+        self.finding_prob = self.finding_probability()
+        self.A, self.B, self.C, self.D = self.zoekgebied()
 
         self.grid = MultiGrid(height, width, torus=False)
         self.schedule = SimultaneousActivation(self)
@@ -55,24 +57,27 @@ class SearchAndRescue(Model):
         """Place the missing person in the grid"""
         random.seed(self.seed)
         # pos_mp = (random.randrange(18, 24), random.randrange(5, 10))
-        pos_mp = (random.randrange(30,50), random.randrange(30,60))
-
-        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self,self.stamina, self.profile)
-
-        # self.schedule.add(missing_person)
+        pos_mp = (random.randrange(30,60), random.randrange(30,50))
+        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, stamina, profile, swimming_speed)
+        self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
 
-        self.A, self.B, self.C, self.D = self.zoekgebied()
-        print(self.A, self.B, self.C, self.D)
-
         """Create the SAR Unit"""
-        unit = Unit(1,self.A[0], self.A[1],self)
+        unit = Unit(1, self.A[0], self.A[1],self)
         self.schedule.add(unit)
         self.grid.place_agent(unit, (self.A[0], self.A[1]))
 
         self.datacollector = DataCollector(model_reporters={}, agent_reporters={})
 
         self.running = True
+
+    def finding_probability(self):
+        if self.wind == 8.0:
+            return 90
+        elif self.wind == 9.0:
+            return 70
+        else:
+            return 50
 
     def init_current(self, x, y):
         breedte = 6
@@ -103,19 +108,19 @@ class SearchAndRescue(Model):
 
     def zoekgebied(self):
         "Inital zoekgebied"
-        A = [200,100]
-        B = [900,100]
-        C = [200,550]
-        D = [900,550]
+        A = [90, 60]
+        B = [1170, 60]
+        C = [90, 780]
+        D = [1170, 780]
 
         "Invloed van tijd en stroming"
-        a_tijd = int(((self.upper_current+(self.max_current/2)/2) * self.tijd_melding_sec)/(math.sqrt(2)))
-        a_stroming = int(((self.upper_current - 0.41) / (0.77-0.41))*200)
+        dx = int(self.tijd_melding_sec * self.upper_current)
+        dy = dx * 600 / 900
 
-        B[0] += a_tijd + a_stroming
-        D[0] += a_tijd + a_stroming
-        D[1] += a_tijd
-        C[1] += a_tijd
+        B[0] += dx
+        D[0] += dx
+        D[1] += dy
+        C[1] += dy
 
         A[0] = int(A[0] / 20)
         A[1] = int(A[1] / 20)
@@ -126,9 +131,8 @@ class SearchAndRescue(Model):
         D[0] = int(D[0] / 20)
         D[1] = int(D[1] / 20)
 
-        print(f"Zoekgebied - A: {A},B: {B}, C:{C}, D: {D}")
-        return A,B,C,D
-
+        print(f"Zoekgebied - A: {A}, B: {B}, C:{C}, D: {D}")
+        return A, B, C, D
 
     def step(self):
         if self.running:

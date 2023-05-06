@@ -16,14 +16,12 @@ class Unit(Agent):
 
         self.x_cell, self.y_cell = self.xy_to_cell()
 
-
         self.speed = 12.86
 
         self.going_up = False
         self.going_right = True
         self.going_left = False
         self.step_nr = 0
-
 
         self.tick = 0
 
@@ -42,10 +40,7 @@ class Unit(Agent):
         self.baan_SS = "KORT"
 
         "Random search variables"
-        max_ticks = int(((self.model.D[1] - self.model.B[1]) * 20 )/self.speed)
-        self.ticks_rs = random.randrange(20, max_ticks)
-        self.hoek_rs = random.randrange(0, 90)
-
+        random.seed(self.model.seed)
         random_x = random.randrange(self.model.A[0], self.model.B[0])
         random_y = random.randrange(self.model.A[1], self.model.C[1])
         self.new_point = (random_x, random_y)
@@ -59,7 +54,7 @@ class Unit(Agent):
 
     def move_search(self):
         pos_mp = self.look(self.model.search_radius)
-        if pos_mp is not ():
+        if pos_mp != ():
             self.move_to(pos_mp)
         else:
             if self.model.search_pattern == 'Parallel Sweep':
@@ -69,13 +64,13 @@ class Unit(Agent):
             elif self.model.search_pattern == 'Sector Search':
                 self.move_ss()
             elif self.model.search_pattern == 'Random Search':
-                self.move_rs_new()
+                self.move_rs()
 
     def move_current(self):
-        for object in self.model.grid.get_cell_list_contents(self.xy_to_cell()):
-            if isinstance(object, Environment):
-                current_y = object.current_y
-                current_x = object.current_x
+        for obj in self.model.grid.get_cell_list_contents(self.xy_to_cell()):
+            if isinstance(obj, Environment):
+                current_y = obj.current_y
+                current_x = obj.current_x
 
         self.y += current_y
         self.x += current_x
@@ -92,11 +87,9 @@ class Unit(Agent):
         ticks_lang = int((((self.model.B[0] - self.model.A[0])*20) / self.speed))
         ticks_kort = int(track_spacing*20 / self.speed)
 
-
         if self.lang_kort_ps == "LANG":
-            "Bij het eind?"
+            "Is de boot bij het eind van de slag?"
             if self.tick_ps == ticks_lang:
-
                 self.tick_ps = 0
                 self.lang_kort_ps = "KORT"
                 if self.richting_ps == "RECHTS":
@@ -114,7 +107,7 @@ class Unit(Agent):
                     self.x -= self.speed
 
         if self.lang_kort_ps == "KORT":
-            "Bij het eind?"
+            "Is de boot bij het eind van de slag?"
             if self.tick_ps == ticks_kort:
                 self.lang_kort_ps = "LANG"
                 self.y += self.speed
@@ -125,16 +118,13 @@ class Unit(Agent):
 
     def move_es(self):
         """Defines the Expanding Square search pattern"""
-
-        S = self.model.search_radius * 20
+        afstand = self.model.search_radius * 20
 
         if not self.reached_middle:
             self.go_to_middle()
         else:
             self.tick_ps += 1
-            ticks = int(S * self.factor_ES / self.speed)
-
-            # print(f'tick: {self.tick_ps}, needed ticks: {ticks} , factor: {self.factor_ES}, baan: {self.baan}')
+            ticks = int(afstand * self.factor_ES / self.speed)
 
             if self.tick_ps == ticks:
                 if self.baan == "EERSTE":
@@ -166,11 +156,10 @@ class Unit(Agent):
 
     def move_ss(self):
         """Defines the Sector Search search pattern"""
-
         v_x = self.speed * math.cos(math.radians(self.hoek))
         v_y = self.speed * math.sin(math.radians(self.hoek))
 
-        hoogte_zoekgebied = (self.model.D[1] - self.model.B[1]) *20
+        hoogte_zoekgebied = (self.model.D[1] - self.model.B[1]) * 20
 
         lange_kant = hoogte_zoekgebied / math.sin(math.radians(60))
         korte_kant = hoogte_zoekgebied / math.tan(math.radians(60))
@@ -216,56 +205,18 @@ class Unit(Agent):
 
     def move_rs(self):
         """Defines the Random Search pattern"""
-        self.tick_ps += 1
-
-        v_x = self.speed * math.cos(math.radians(self.hoek_rs))
-        v_y = self.speed * math.sin(math.radians(self.hoek_rs))
-
-        print(f'ticknr: {self.tick_ps}, tot tick: {self.ticks_rs}, met hoek {self.hoek_rs}')
-
-        if self.tick_ps == self.ticks_rs:
-            min_ticks = 0 # bepalen
-            max_ticks = 30 # bepalen
-            self.ticks_rs = random.randrange(min_ticks, max_ticks)
-
-            min_hoek = 20 # berekenen
-            max_hoek = 80 # berekenen
-            self.hoek_rs += random.randrange(min_hoek, max_hoek)
-
-            self.tick_ps = 0
-
-            self.x += v_x
-            self.y += v_y
-        else:
-            self.x += v_x
-            self.y += v_y
-
-    def move_rs_new(self):
-        """Defines the Random Search pattern"""
-
-        "Ëventueel stroming toevoegen. Checken of boot wel dichterbij cell komt als ze allebei in y-richting bewegen"
-        # for object in self.model.grid.get_cell_list_contents(self.xy_to_cell()):
-        #     if isinstance(object, Environment):
-        #         current_y = object.current_y
-        #         current_x = object.current_x
-        #
-        # self.new_point[1] += current_y
-        # self.new_point[0] += current_x
-        #
-        # x = int(self.new_point[0])
-        # y = int(self.new_point[1])
-        # cell_new_point = (x,y)
-
-
-        print(f'cell: x,y = {self.new_point[0], self.new_point[1]} en zelf: x,y = {self.xy_to_cell()}')
+        print(f'cell: x,y = {self.new_point} en zelf: x,y = {self.xy_to_cell()}')
 
         self.move_to(self.new_point)
 
         if self.new_point in self.model.grid.get_neighborhood((self.x_cell, self.y_cell), moore=True,
-                                                                 include_center=False, radius=1):
+                                                              include_center=False, radius=1):
             random_x = random.randrange(self.model.A[0], self.model.B[0])
+            print(f'x:random range uit: {self.model.A[0], self.model.B[0]}')
             random_y = random.randrange(self.model.A[1], self.model.C[1])
+            print(f'y: random range uit: {self.model.A[1], self.model.C[1]}')
             self.new_point = (random_x, random_y)
+            print(f'nwe_point is nu: {self.new_point}')
 
     def go_to_middle(self):
         midden_x = int((self.model.B[0] + self.model.A[0]) / 2)
@@ -277,14 +228,14 @@ class Unit(Agent):
                                                                  include_center=False, radius=1):
             self.reached_middle = True
 
-
     def look(self, radius):
-        # get neighbors radius range
+        """Does the searching unit have the person in its search radius,
+        will they spot them according to assigned finding probability, determined by wind and wave height."""
         field = self.model.grid.get_neighborhood(self.xy_to_cell(), moore=True, include_center=False, radius=radius)
 
         agents_in_range = {}
         for cell in field:
-            agents = self.model.grid.get_cell_list_contents((cell))
+            agents = self.model.grid.get_cell_list_contents(cell)
             for agent in agents:
                 if isinstance(agent, Environment):
                     agents_in_range["env"] = cell
@@ -293,7 +244,8 @@ class Unit(Agent):
 
         if any(agent_key == "mp" for agent_key in agents_in_range.keys()):
             position_missing_person = agents_in_range["mp"]
-            return position_missing_person
+            if random.randrange(0, 100) < self.model.finding_prob:
+                return position_missing_person
         return ()
 
     def move_to(self, cell):
@@ -341,7 +293,10 @@ class Unit(Agent):
     def step(self):
         self.tick += 1
         self.x_cell, self.y_cell = self.xy_to_cell()
-        if self.tick > self.model.tijd_melding_sec:
+        # tijd_test = 0
+        tijd_test = self.model.tijd_melding_sec
+        # print(f'{self.tick} > {tijd_test}')
+        if self.tick > tijd_test:
             cell_new = self.xy_to_cell()
             loc = self.model.grid.get_cell_list_contents(cell_new)
             for obj in loc:
@@ -351,9 +306,7 @@ class Unit(Agent):
             """How does the unit move according to the search state (still looking or moving to a position)"""
             self.move_search()
             """How does the unit move due to the current"""
-            self.move_current()
+            # self.move_current()
 
             cell = self.xy_to_cell()
             self.model.grid.move_agent(self, cell)
-
-            # print(f"real x: {self.x}, real y: {self.y}, cell position: {cell}")
