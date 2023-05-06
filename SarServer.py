@@ -18,7 +18,7 @@ params = {
                                                      'Expanding Square',
                                                      'Sector Search',
                                                      'Random Search']),
-    "search_radius": UserSettableParameter("slider", "Search radius (in 20m)", 125, 50, 125, 25),
+    "search_radius": UserSettableParameter("slider", "Search radius (in m)", 125, 50, 125, 25),
     "max_current": UserSettableParameter("slider", "maximum current in riptide (m/s)", 2.5, 1, 2.5, 0.5),
     "upper_current": UserSettableParameter("slider", "upper current in northerly direction (m/s)", 0.77, 0.41, 0.77, 0.01),
     "wind": UserSettableParameter("slider", "wind", 8, 8, 10, 1),
