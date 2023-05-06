@@ -88,9 +88,8 @@ class Unit(Agent):
         ticks_kort = int(track_spacing*20 / self.speed)
 
         if self.lang_kort_ps == "LANG":
-            "Bij het eind?"
+            "Is de boot bij het eind van de slag?"
             if self.tick_ps == ticks_lang:
-
                 self.tick_ps = 0
                 self.lang_kort_ps = "KORT"
                 if self.richting_ps == "RECHTS":
@@ -108,7 +107,7 @@ class Unit(Agent):
                     self.x -= self.speed
 
         if self.lang_kort_ps == "KORT":
-            "Bij het eind?"
+            "Is de boot bij het eind van de slag?"
             if self.tick_ps == ticks_kort:
                 self.lang_kort_ps = "LANG"
                 self.y += self.speed
@@ -119,7 +118,6 @@ class Unit(Agent):
 
     def move_es(self):
         """Defines the Expanding Square search pattern"""
-
         afstand = self.model.search_radius * 20
 
         if not self.reached_middle:
@@ -127,8 +125,6 @@ class Unit(Agent):
         else:
             self.tick_ps += 1
             ticks = int(afstand * self.factor_ES / self.speed)
-
-            # print(f'tick: {self.tick_ps}, needed ticks: {ticks} , factor: {self.factor_ES}, baan: {self.baan}')
 
             if self.tick_ps == ticks:
                 if self.baan == "EERSTE":
@@ -160,7 +156,6 @@ class Unit(Agent):
 
     def move_ss(self):
         """Defines the Sector Search search pattern"""
-
         v_x = self.speed * math.cos(math.radians(self.hoek))
         v_y = self.speed * math.sin(math.radians(self.hoek))
 
@@ -210,17 +205,12 @@ class Unit(Agent):
 
     def move_rs(self):
         """Defines the Random Search pattern"""
-        print(self.model.seed)
-
-        "Ëventueel stroming toevoegen. Checken of boot wel dichterbij cell komt als ze allebei in y-richting bewegen"
         print(f'cell: x,y = {self.new_point} en zelf: x,y = {self.xy_to_cell()}')
 
         self.move_to(self.new_point)
 
         if self.new_point in self.model.grid.get_neighborhood((self.x_cell, self.y_cell), moore=True,
-                                                                 include_center=False, radius=1):
-            seed = self.model.seed + self.tick
-            random.seed(seed)
+                                                              include_center=False, radius=1):
             random_x = random.randrange(self.model.A[0], self.model.B[0])
             print(f'x:random range uit: {self.model.A[0], self.model.B[0]}')
             random_y = random.randrange(self.model.A[1], self.model.C[1])
@@ -239,12 +229,13 @@ class Unit(Agent):
             self.reached_middle = True
 
     def look(self, radius):
-        # get neighbors radius range
+        """Does the searching unit have the person in its search radius,
+        will they spot them according to assigned finding probability, determined by wind and wave height."""
         field = self.model.grid.get_neighborhood(self.xy_to_cell(), moore=True, include_center=False, radius=radius)
 
         agents_in_range = {}
         for cell in field:
-            agents = self.model.grid.get_cell_list_contents((cell))
+            agents = self.model.grid.get_cell_list_contents(cell)
             for agent in agents:
                 if isinstance(agent, Environment):
                     agents_in_range["env"] = cell
@@ -253,7 +244,8 @@ class Unit(Agent):
 
         if any(agent_key == "mp" for agent_key in agents_in_range.keys()):
             position_missing_person = agents_in_range["mp"]
-            return position_missing_person
+            if random.randrange(0, 100) < self.model.finding_prob:
+                return position_missing_person
         return ()
 
     def move_to(self, cell):
@@ -303,7 +295,7 @@ class Unit(Agent):
         self.x_cell, self.y_cell = self.xy_to_cell()
         # tijd_test = 0
         tijd_test = self.model.tijd_melding_sec
-        print(f'{self.tick} > {tijd_test}')
+        # print(f'{self.tick} > {tijd_test}')
         if self.tick > tijd_test:
             cell_new = self.xy_to_cell()
             loc = self.model.grid.get_cell_list_contents(cell_new)
