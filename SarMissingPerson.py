@@ -18,6 +18,8 @@ class MissingPerson(Agent):
         self.x = x*20
         self.y = y*20
 
+        self.tick = 0
+
     def xy_to_cell(self):
         x = int(self.x/20)
         y = int(self.y/20)
@@ -96,10 +98,12 @@ class MissingPerson(Agent):
         print(f'x_meters {leeway_x}, y_meters {leeway_y}')
 
     def step(self):
+        self.tick += 1
         print(f'stamina: {self.stamina}')
         if self.stamina > 0:
             """How will the person move due to the current in the given cell"""
-            # self.move_current()
+            if self.tick < self.model.tijd_melding_sec:
+                self.move_current()
             """How will the person move due to its own swimming and choices"""
             self.move_swim()
             """How will the person move due to the wind in the model"""

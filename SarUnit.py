@@ -299,10 +299,12 @@ class Unit(Agent):
                 self.model.running = False
 
     def step(self):
-        print(f'{self.tick} > {self.model.tijd_melding_sec}')
         self.tick += 1
         self.x_cell, self.y_cell = self.xy_to_cell()
-        if self.tick > self.model.tijd_melding_sec:
+        # tijd_test = 0
+        tijd_test = self.model.tijd_melding_sec
+        print(f'{self.tick} > {tijd_test}')
+        if self.tick > tijd_test:
             cell_new = self.xy_to_cell()
             loc = self.model.grid.get_cell_list_contents(cell_new)
             for obj in loc:
@@ -312,9 +314,7 @@ class Unit(Agent):
             """How does the unit move according to the search state (still looking or moving to a position)"""
             self.move_search()
             """How does the unit move due to the current"""
-            self.move_current()
+            # self.move_current()
 
             cell = self.xy_to_cell()
             self.model.grid.move_agent(self, cell)
-
-            # print(f"real x: {self.x}, real y: {self.y}, cell position: {cell}")

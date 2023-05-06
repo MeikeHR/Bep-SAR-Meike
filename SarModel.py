@@ -39,15 +39,12 @@ class SearchAndRescue(Model):
         self.upper_current = upper_current
         self.wind=wind
         self.wind_richting = wind_richting
-        # self.stamina = stamina
-        # self.profile = profile
         self.seed = seed
         self.tijd_melding_sec = tijd_melding * 60
 
         self.zicht = self.wind / 2
 
         print(f'tijd {tijd_melding} * 60 ={self.tijd_melding_sec}')
-
 
         self.grid = MultiGrid(height, width, torus=False)
         self.schedule = SimultaneousActivation(self)
@@ -63,17 +60,17 @@ class SearchAndRescue(Model):
         # pos_mp = (random.randrange(18, 24), random.randrange(5, 10))
         pos_mp = (random.randrange(30,60), random.randrange(30,50))
 
-        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self,stamina, profile, swimming_speed)
+        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, stamina, profile, swimming_speed)
 
         self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
 
         self.A, self.B, self.C, self.D = self.zoekgebied()
-        print(self.A, self.B, self.C, self.D)
+        print(f'Zoekgebied: {self.A, self.B, self.C, self.D}')
 
         """Create the SAR Unit"""
-        unit = Unit(1,self.A[0], self.A[1],self)
-        # self.schedule.add(unit)
+        unit = Unit(1, self.A[0], self.A[1],self)
+        self.schedule.add(unit)
         self.grid.place_agent(unit, (self.A[0], self.A[1]))
 
         self.datacollector = DataCollector(model_reporters={}, agent_reporters={})
@@ -109,19 +106,29 @@ class SearchAndRescue(Model):
 
     def zoekgebied(self):
         "Inital zoekgebied"
-        A = [200,100]
-        B = [900,100]
-        C = [200,550]
-        D = [900,550]
+        A = [90, 60]
+        B = [1170, 60]
+        C = [90, 780]
+        D = [1170, 780]
 
         "Invloed van tijd en stroming"
-        a_tijd = int(((self.upper_current+(self.max_current/2)/2) * self.tijd_melding_sec)/(math.sqrt(2)))
-        a_stroming = int(((self.upper_current - 0.41) / (0.77-0.41))*200)
+        a_tijd = int(self.tijd_melding_sec * ((self.upper_current+(self.max_current/2))/2) / (math.sqrt(2)))
+        a_stroming = int((self.upper_current - 0.41) * 200 / (0.77-0.41))
 
-        B[0] += a_tijd + a_stroming
-        D[0] += a_tijd + a_stroming
-        D[1] += a_tijd
-        C[1] += a_tijd
+        dx = int(self.tijd_melding_sec * self.upper_current)
+        dy = dx * 600 / 900
+
+        # B[0] += a_tijd + a_stroming
+        # D[0] += a_tijd + a_stroming
+        # D[1] += a_tijd
+        # C[1] += a_tijd
+
+        B[0] += dx
+        D[0] += dx
+        D[1] += dy
+        C[1] += dy
+
+        print(f"Zoekgebied - A: {A},B: {B}, C:{C}, D: {D}")
 
         A[0] = int(A[0] / 20)
         A[1] = int(A[1] / 20)
