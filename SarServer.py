@@ -11,26 +11,26 @@ from SarMissingPerson import MissingPerson
 
 
 params = {
-    "height": 90,
+    "height": 100,
     "width": 60,
-    "search_pattern": UserSettableParameter('choice', "Zoekpatroon", value='Random Search',
+    "search_pattern": UserSettableParameter('choice', "Zoekpatroon", value='Parallel Sweep',
                                             choices=['Parallel Sweep',
                                                      'Expanding Square',
                                                      'Sector Search',
                                                      'Random Search']),
-    "search_radius": UserSettableParameter("slider", "Search radius (in 20m)", 125, 50, 125, 25),
-    "max_current": UserSettableParameter("slider", "maximum current in riptide (m/s)", 2.5, 1, 2.5, 0.5),
-    "upper_current": UserSettableParameter("slider", "upper current in northerly direction (m/s)", 0.77, 0.41, 0.77, 0.01),
-    "wind": UserSettableParameter("slider", "wind", 8, 8, 10, 1),
-    "wind_richting": UserSettableParameter('choice', "wind richting", value='ZUID',
-                                            choices=['NOORD',
-                                                     'ZUID']),
-    "stamina": UserSettableParameter("slider", "stamina (-)", 1200, 900, 3600, 100),
-    "profile": UserSettableParameter("slider", "profile (-)", 2, 1, 2, 1),
-    "swimming_speed": UserSettableParameter("slider", "swimming speed", 0.4, 0.2, 0.6, 0.1),
-    "tijd_melding": UserSettableParameter("slider", "tijd_melding(minuten)", 0, 0, 10, 1),
-
-
+    "wind_richting": UserSettableParameter('choice', "Wind richting", value='ZUID',
+                                           choices=['NOORD',
+                                                    'ZUID']),
+    "swimming_ability": UserSettableParameter('choice', "Zwemvaardigheid", value='GOED',
+                                           choices=['GOED',
+                                                    'SLECHT']),
+    "max_current": UserSettableParameter("slider", "Maximum current in riptide (m/s)", 1.5, 1, 2.5, 0.5),
+    "upper_current": UserSettableParameter("slider", "Upper current, northern direction (m/s)", 0.5, 0.41, 0.77, 0.01),
+    "search_radius": UserSettableParameter("slider", "Search radius (m)", 125, 50, 125, 25),
+    "wind": UserSettableParameter("slider", "Windsnelheid (m/s)", 8, 8, 10, 1),
+    "stamina": UserSettableParameter("slider", "Conditie (-)", 1800, 900, 3600, 100),
+    "profile": UserSettableParameter("slider", "Profiel (-)", 1, 1, 2, 1),
+    "tijd_melding": UserSettableParameter("slider", "Uitruktijd (min)", 10, 0, 15, 5)
 }
 
 
@@ -82,6 +82,6 @@ def portrayal_method(agent):
     return portrayal
 
 
-grid = CanvasGrid(portrayal_method, 90, 60, 900, 600)
+grid = CanvasGrid(portrayal_method, 100, 60, 1000, 600)
 
 server = ModularServer(SearchAndRescue, [grid], "Sar Model", params)

@@ -7,18 +7,28 @@ from SarEnvironment import Environment
 
 
 class MissingPerson(Agent):
-    def __init__(self, unique_id, x, y, model,stamina, profile, swimming_speed):
+    def __init__(self, unique_id, x, y, model,stamina, profile, swimming_speed, swimming_ability,seed):
         super().__init__(unique_id, model)
-        self.stamina = stamina
         self.profile = profile
         self.swimming_speed = swimming_speed
+        self.swimming_ability = swimming_ability
         self.wind = self.model.wind
         self.wind_richting = self.model.wind_richting
+
+        self.stamina = self.init_stamina(stamina)
 
         self.x = x*20
         self.y = y*20
 
         self.tick = 0
+
+        random.seed(seed)
+
+    def init_stamina(self, stamina):
+        if self.swimming_ability == "GOED":
+            return stamina
+        else:
+            return stamina * 2 / 3
 
     def xy_to_cell(self):
         x = int(self.x/20)
@@ -47,9 +57,9 @@ class MissingPerson(Agent):
         "Vermiste laat zich meevoeren en zwemt vervolgens naar het strand terug"
         if self.profile == 1:
             if 23 > x_cell > 18:
-                if 0 < y_cell < 10:
+                if 0 < y_cell < 5:
                     pass
-            elif y_cell >= 10 and 23 + 2 > x_cell > 18 - 2:
+            elif y_cell >= 5 and 23 + 2 > x_cell > 18 - 2:
                 self.x += self.swimming_speed
                 self.stamina -= 1
                 print(f'zwemsnelheid: {self.swimming_speed}, x: {self.x}, y: {self.y}')
@@ -82,14 +92,17 @@ class MissingPerson(Agent):
 
         """Persoon zwemt een willekeurige kant op, er vanuit gaande dat deze nauwelijks kan zien waar het strand is."""
         if self.profile == 2:
-            x_random = 0.5 + random.randrange(-5, 5, 1) / 10
-            y_random = 0.5 + random.randrange(-5, 1, 1) / 10
+            x_random = 2 * random.randrange(-5, 5, 1) / 10
+            y_random = 2 * random.randrange(-5, 1, 1) / 10
 
             self.x += x_random * self.swimming_speed
             self.y += y_random * self.swimming_speed
 
             self.stamina -= 2
             print(f'x_random * sw: {x_random * self.swimming_speed}, y_random * sw: {y_random*self.swimming_speed}')
+
+        self.x += random.randrange(-15, 20, 5) / 15 * self.swimming_speed / 2
+        self.y += random.randrange(-15, 20, 5) / 15 * self.swimming_speed / 2
 
     def move_wind(self):
         if self.wind_richting == "NOORD":

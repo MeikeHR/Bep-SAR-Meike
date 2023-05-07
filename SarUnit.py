@@ -9,10 +9,12 @@ from SarEnvironment import Environment
 
 class Unit(Agent):
 
-    def __init__(self, unique_id, x, y, model):
+    def __init__(self, unique_id, x, y, model, seed):
         super().__init__(unique_id, model)
         self.x = x * 20
         self.y = y * 20
+
+        random.seed(seed)
 
         self.x_cell, self.y_cell = self.xy_to_cell()
 
@@ -266,6 +268,7 @@ class Unit(Agent):
 
             agents = self.model.grid.get_cell_list_contents((self.xy_to_cell()))
             if any(isinstance(agent, MissingPerson) for agent in agents):
+                print(f'Person was found at {self.tick}')
                 self.model.running = False
 
         elif dx > dy:
