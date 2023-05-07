@@ -15,25 +15,23 @@ import random
 class SearchAndRescue(Model):
 
     def __init__(self,
-                 width=90, height=60,
+                 width=100, height=60,
                  search_pattern='Parallel Sweep',
-                 num_units=1,
                  search_radius=125,
                  max_current=1.5,
                  upper_current=0.5,
                  wind=8,
-                 stamina=200,
+                 stamina=1800,
                  profile=1,
-                 swimming_speed=0.4,
+                 swimming_ability="GOED",
                  tijd_melding=10,
                  wind_richting='ZUID',
-                 # seed=205140,
-                 seed=random.randint(0,50000)
+                 seed=101,
+                 # seed=random.randint(0,50000)
                  ):
         super().__init__()
 
         self.search_pattern = search_pattern
-        self.num_units = num_units
         self.max_current = max_current
         self.upper_current = upper_current
         self.wind = wind
@@ -48,6 +46,8 @@ class SearchAndRescue(Model):
         self.grid = MultiGrid(height, width, torus=False)
         self.schedule = SimultaneousActivation(self)
 
+        random.seed(self.seed)
+
         """Create the environment, containing the values and directions of the currents"""
         for (contents, x, y) in self.grid.coord_iter():
             current_x, current_y = self.init_current(x, y)
@@ -55,21 +55,25 @@ class SearchAndRescue(Model):
             self.grid.place_agent(cell, (x, y))
 
         """Place the missing person in the grid"""
-        random.seed(self.seed)
-        # pos_mp = (random.randrange(18, 24), random.randrange(5, 10))
-        pos_mp = (random.randrange(30,60), random.randrange(30,50))
-        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, stamina, profile, swimming_speed)
+        pos_mp = (random.randrange(18, 24), random.randrange(0, 5))
+        # pos_mp = (random.randrange(30, 60), random.randrange(30, 50))
+        swimming_speed = 0.4
+        missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, stamina, profile,
+                                       swimming_speed, swimming_ability, self.seed)
         self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
 
         """Create the SAR Unit"""
-        unit = Unit(1, self.A[0], self.A[1],self)
+        unit = Unit(1, self.A[0], self.A[1], self, self.seed)
         self.schedule.add(unit)
         self.grid.place_agent(unit, (self.A[0], self.A[1]))
 
         self.datacollector = DataCollector(model_reporters={}, agent_reporters={})
 
+        self.step_counter = 0
+        # self.stamina_counter = self.get_stamina()
         self.running = True
+
 
     def finding_probability(self):
         if self.wind == 8.0:
@@ -83,7 +87,7 @@ class SearchAndRescue(Model):
         breedte = 6
         links = 17
         rechts = 24
-        lengte = 10
+        lengte = 5
 
         current_x = 0
         current_y = 0
@@ -107,15 +111,15 @@ class SearchAndRescue(Model):
         return current_x, current_y
 
     def zoekgebied(self):
-        "Inital zoekgebied"
-        A = [90, 60]
-        B = [1170, 60]
-        C = [90, 780]
-        D = [1170, 780]
+        "Initiele zoekgebied"
+        A = [100, 60]
+        B = [1200, 60]
+        C = [100, 720]
+        D = [1200, 720]
 
         "Invloed van tijd en stroming"
         dx = int(self.tijd_melding_sec * self.upper_current)
-        dy = dx * 600 / 900
+        dy = dx * 600 / 1000
 
         B[0] += dx
         D[0] += dx
@@ -135,6 +139,10 @@ class SearchAndRescue(Model):
         return A, B, C, D
 
     def step(self):
+        self.step_counter += 1
         if self.running:
             self.schedule.step()
+        else:
+            print(f'tijd: {self.step_counter}')
+            print(f'stamina eind: {[agent.stamina for agent in self.schedule.agents if isinstance(agent, MissingPerson)]}')
         self.datacollector.collect(self)
