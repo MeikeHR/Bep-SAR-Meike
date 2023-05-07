@@ -14,7 +14,7 @@ class Unit(Agent):
         self.x = x * 20
         self.y = y * 20
 
-        random.seed(seed)
+        # random.seed(seed)
 
         self.x_cell, self.y_cell = self.xy_to_cell()
 
@@ -42,7 +42,7 @@ class Unit(Agent):
         self.baan_SS = "KORT"
 
         "Random search variables"
-        random.seed(self.model.seed)
+        # random.seed(self.model.seed)
         random_x = random.randrange(self.model.A[0], self.model.B[0])
         random_y = random.randrange(self.model.A[1], self.model.C[1])
         self.new_point = (random_x, random_y)
@@ -234,7 +234,8 @@ class Unit(Agent):
         """Does the searching unit have the person in its search radius,
         will they spot them according to assigned finding probability, determined by wind and wave height."""
         field = self.model.grid.get_neighborhood(self.xy_to_cell(), moore=True, include_center=False, radius=radius)
-
+        print(f'Unit is now at: ({self.xy_to_cell()}) ')
+        # print(f'Unit is looking in field with radius: {field}')
         agents_in_range = {}
         for cell in field:
             agents = self.model.grid.get_cell_list_contents(cell)
@@ -247,6 +248,7 @@ class Unit(Agent):
         if any(agent_key == "mp" for agent_key in agents_in_range.keys()):
             position_missing_person = agents_in_range["mp"]
             if random.randrange(0, 100) < self.model.finding_prob:
+                print(f'Unit found agent at {position_missing_person}, now')
                 return position_missing_person
         return ()
 
@@ -298,8 +300,9 @@ class Unit(Agent):
         self.x_cell, self.y_cell = self.xy_to_cell()
         # tijd_test = 0
         tijd_test = self.model.tijd_melding_sec
-        # print(f'{self.tick} > {tijd_test}')
+        print(f'agent now moving?: {self.tick} > {tijd_test}')
         if self.tick > tijd_test:
+            print(f'Yes, unit is moving')
             cell_new = self.xy_to_cell()
             loc = self.model.grid.get_cell_list_contents(cell_new)
             for obj in loc:

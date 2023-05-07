@@ -36,7 +36,6 @@ class SearchAndRescue(Model):
         self.upper_current = upper_current
         self.wind = wind
         self.wind_richting = wind_richting
-        self.seed = seed
 
         self.search_radius = int(search_radius / 20)
         self.tijd_melding_sec = tijd_melding * 60
@@ -46,7 +45,7 @@ class SearchAndRescue(Model):
         self.grid = MultiGrid(height, width, torus=False)
         self.schedule = SimultaneousActivation(self)
 
-        random.seed(self.seed)
+        random.seed(seed)
 
         """Create the environment, containing the values and directions of the currents"""
         for (contents, x, y) in self.grid.coord_iter():
@@ -59,21 +58,23 @@ class SearchAndRescue(Model):
         # pos_mp = (random.randrange(30, 60), random.randrange(30, 50))
         swimming_speed = 0.4
         missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, stamina, profile,
-                                       swimming_speed, swimming_ability, self.seed)
+                                       swimming_speed, swimming_ability, seed)
         self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
 
         """Create the SAR Unit"""
-        unit = Unit(1, self.A[0], self.A[1], self, self.seed)
+        unit = Unit(1, self.A[0], self.A[1], self, seed)
         self.schedule.add(unit)
+        print(f'schedule: {self.schedule}')
         self.grid.place_agent(unit, (self.A[0], self.A[1]))
 
         self.datacollector = DataCollector(model_reporters={}, agent_reporters={})
 
         self.step_counter = 0
-        # self.stamina_counter = self.get_stamina()
         self.running = True
 
+        print(random.random())
+        print(self.random.random())
 
     def finding_probability(self):
         if self.wind == 8.0:

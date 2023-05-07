@@ -22,7 +22,7 @@ class MissingPerson(Agent):
 
         self.tick = 0
 
-        random.seed(seed)
+        # random.seed(seed)
 
     def init_stamina(self, stamina):
         if self.swimming_ability == "GOED":
@@ -62,12 +62,12 @@ class MissingPerson(Agent):
             elif y_cell >= 5 and 23 + 2 > x_cell > 18 - 2:
                 self.x += self.swimming_speed
                 self.stamina -= 1
-                print(f'zwemsnelheid: {self.swimming_speed}, x: {self.x}, y: {self.y}')
+                # print(f'zwemsnelheid: {self.swimming_speed}, x: {self.x}, y: {self.y}')
             else:
                 self.y -= self.swimming_speed
                 self.stamina -= 1
-                print(f'INELSE: zwemsnelheid: {self.swimming_speed}, x: {self.x}, y: {self.y}')
-            print(f"profile = {self.profile}, y_cell = {y_cell}, x_cell = {x_cell}")
+                # print(f'INELSE: zwemsnelheid: {self.swimming_speed}, x: {self.x}, y: {self.y}')
+            # print(f"profile = {self.profile}, y_cell = {y_cell}, x_cell = {x_cell}")
 
         """Vermiste persoon zwemt in paniek willekeurig rond"""
         if self.profile == 2:
@@ -100,9 +100,11 @@ class MissingPerson(Agent):
 
             self.stamina -= 2
             print(f'x_random * sw: {x_random * self.swimming_speed}, y_random * sw: {y_random*self.swimming_speed}')
-
-        self.x += random.randrange(-15, 20, 5) / 15 * self.swimming_speed / 2
-        self.y += random.randrange(-15, 20, 5) / 15 * self.swimming_speed / 2
+        dx = random.randrange(-15, 20, 5) / 15 * self.swimming_speed / 2
+        dy = random.randrange(-15, 20, 5) / 15 * self.swimming_speed / 2
+        print(f'dx: {dx}, dy: {dy}')
+        self.x += dx
+        self.y += dy
 
     def move_wind(self):
         if self.wind_richting == "NOORD":
@@ -121,9 +123,9 @@ class MissingPerson(Agent):
         self.x += leeway_x
         self.y += leeway_y
 
-        print(f'richting: {self.wind_richting}, snelheid: {self.wind}')
-        print(f'orig graden: {graden}, richting_stap: {richting}graden, factor: {factor}')
-        print(f'x_meters {leeway_x}, y_meters {leeway_y}')
+        # print(f'richting: {self.wind_richting}, snelheid: {self.wind}')
+        # print(f'orig graden: {graden}, richting_stap: {richting}graden, factor: {factor}')
+        # print(f'x_meters {leeway_x}, y_meters {leeway_y}')
 
     def step(self):
         self.tick += 1
@@ -137,7 +139,7 @@ class MissingPerson(Agent):
             # self.move_swim()
             self.move_swim_new()
             """How will the person move due to the wind in the model"""
-            # self.move_wind()
+            self.move_wind()
 
             cell = self.xy_to_cell()
             x, y = cell

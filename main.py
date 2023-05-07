@@ -8,14 +8,14 @@ from SarMissingPerson import MissingPerson
 import pandas as pd
 
 # Set to True if  you want to experiment and to False if you want to see the running server
-Experimenting = False
+Experimenting = True
 single_seed = False
 # Run the server and do manual experiments
 
 if not Experimenting and not single_seed:
     server.launch()
 elif Experimenting and not single_seed:
-    num_iterations = 10
+    num_iterations = 5
 
     seed_list = []
     search_pattern_list = []
@@ -34,19 +34,19 @@ elif Experimenting and not single_seed:
     for i in range(0, num_iterations):
         width = 100
         height = 60
-        search_pattern = "Parallel sweep"
+        search_pattern = "Parallel Sweep"
         search_radius = 125
         max_current = 1.5
         upper_current = 0.5
         wind = 8
-        stamina = 1800
+        stamina = 3600
         profile = 1
-        swimming_ability="GOED"
-        tijd_melding = 10
+        swimming_ability ="GOED"
+        tijd_melding = 5
         wind_richting = "ZUID"
         seed_n = 100
-
         seed = seed_n + i
+        random.seed(seed)
 
         model = SearchAndRescue(width, height,
                                 search_pattern,
@@ -61,6 +61,7 @@ elif Experimenting and not single_seed:
                                 wind_richting,
                                 seed
                                 )
+
         while model.running:
             model.step()
 
@@ -77,9 +78,7 @@ elif Experimenting and not single_seed:
         wind_richting_list.append(wind_richting)
         tijd_list.append(model.step_counter)
         stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
-        print(stamina)
         stamina_eind_list.append(stamina_eind[0])
-        print(len(stamina_eind_list), len(tijd_list), len(wind_list))
 
     raw_data = {"Seed":seed_list,
                 "Search pattern": search_pattern_list,
@@ -149,7 +148,6 @@ elif Experimenting and single_seed:
     tijd_list = [model.step_counter]
     stamina_eind_list = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
 
-
     raw_data = {"Seed":seed_list,
                 "Search pattern": search_pattern_list,
                 "Search radius": search_radius_list,
@@ -171,7 +169,7 @@ elif Experimenting and single_seed:
 
 elif not Experimenting and single_seed:
     print("In Sar Model doen!!")
-    # Doe dit in SarModel document: Seed aanpassen
+
 
 
 
