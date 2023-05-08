@@ -15,12 +15,12 @@ single_seed = False
 if not Experimenting and not single_seed:
     server.launch()
 elif Experimenting and not single_seed:
-    num_iterations = 5
+    num_iterations = 10
 
     seed_list = []
     search_pattern_list = []
     search_radius_list = []
-    max_current_list=[]
+    max_current_list = []
     upper_current_list = []
     wind_list = []
     stamina_list = []
@@ -32,6 +32,7 @@ elif Experimenting and not single_seed:
     stamina_eind_list = []
 
     for i in range(0, num_iterations):
+
         width = 100
         height = 60
         search_pattern = "Parallel Sweep"
@@ -41,12 +42,14 @@ elif Experimenting and not single_seed:
         wind = 8
         stamina = 3600
         profile = 1
-        swimming_ability ="GOED"
+        swimming_ability = "GOED"
         tijd_melding = 5
         wind_richting = "ZUID"
-        seed_n = 100
+        seed_n = 200
         seed = seed_n + i
         random.seed(seed)
+
+        print(f"running experiment {i} with seed {seed}")
 
         model = SearchAndRescue(width, height,
                                 search_pattern,
@@ -80,7 +83,8 @@ elif Experimenting and not single_seed:
         stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
         stamina_eind_list.append(stamina_eind[0])
 
-    raw_data = {"Seed":seed_list,
+
+    raw_data = {"Seed": seed_list,
                 "Search pattern": search_pattern_list,
                 "Search radius": search_radius_list,
                 "Max_current": max_current_list,
@@ -96,17 +100,17 @@ elif Experimenting and not single_seed:
                 }
 
     df = pd.DataFrame(raw_data)
-    filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results'
+    filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results1.txt'
     # version = f'{i}'
     # filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_test' + version
 
     df.to_csv(filepath)
 
 elif Experimenting and single_seed:
-    seed=208596
+    seed = 100
     width = 100
     height = 60
-    search_pattern = "Parallel sweep"
+    search_pattern = "Parallel Sweep"
     search_radius = 125
     max_current = 1.5
     upper_current = 0.5

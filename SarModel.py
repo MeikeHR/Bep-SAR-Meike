@@ -24,12 +24,15 @@ class SearchAndRescue(Model):
                  stamina=1800,
                  profile=1,
                  swimming_ability="GOED",
-                 tijd_melding=10,
+                 tijd_melding=5,
                  wind_richting='ZUID',
-                 seed=101,
+                 seed=100,
                  # seed=random.randint(0,50000)
                  ):
         super().__init__()
+
+        self.width = width
+        self.height = height
 
         self.search_pattern = search_pattern
         self.max_current = max_current
@@ -42,7 +45,7 @@ class SearchAndRescue(Model):
         self.finding_prob = self.finding_probability()
         self.A, self.B, self.C, self.D = self.zoekgebied()
 
-        self.grid = MultiGrid(height, width, torus=False)
+        self.grid = MultiGrid(width, height, torus=False)
         self.schedule = SimultaneousActivation(self)
 
         random.seed(seed)
@@ -54,7 +57,7 @@ class SearchAndRescue(Model):
             self.grid.place_agent(cell, (x, y))
 
         """Place the missing person in the grid"""
-        pos_mp = (random.randrange(18, 24), random.randrange(0, 5))
+        pos_mp = (random.randrange(10,30), random.randrange(5,15))
         # pos_mp = (random.randrange(30, 60), random.randrange(30, 50))
         swimming_speed = 0.4
         missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, stamina, profile,

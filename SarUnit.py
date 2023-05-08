@@ -59,7 +59,7 @@ class Unit(Agent):
         if pos_mp != ():
             self.move_to(pos_mp)
         else:
-            if self.model.search_pattern == 'Parallel Sweep':
+            if self.model.search_pattern == "Parallel Sweep":
                 self.move_ps()
             elif self.model.search_pattern == 'Expanding Square':
                 self.move_es()
@@ -81,13 +81,13 @@ class Unit(Agent):
 
     def move_ps(self):
         """Defines the Parallel Sweep search pattern"""
+        print(f'Moving due to PS pattern')
         self.tick_ps += 1
         track_spacing = self.model.search_radius * 2
 
-        print(f'slag:{self.lang_kort_ps}, richting: {self.richting_ps}')
-
         ticks_lang = int((((self.model.B[0] - self.model.A[0])*20) / self.speed))
         ticks_kort = int(track_spacing*20 / self.speed)
+        print(f'With ticks: {self.tick_ps}, max ticks lang: {ticks_lang}, en baan: {self.lang_kort_ps}')
 
         if self.lang_kort_ps == "LANG":
             "Is de boot bij het eind van de slag?"
@@ -100,7 +100,6 @@ class Unit(Agent):
                 else:
                     self.x -= self.speed
                     self.richting_ps = "RECHTS"
-                print(f'ticks lang > slag:{self.lang_kort_ps}, richting: {self.richting_ps}')
 
             else:
                 if self.richting_ps == "RECHTS":
@@ -114,7 +113,6 @@ class Unit(Agent):
                 self.lang_kort_ps = "LANG"
                 self.y += self.speed
                 self.tick_ps = 0
-                print(f'ticks kort > slag:{self.lang_kort_ps}, richting: {self.richting_ps}')
             else:
                 self.y += self.speed
 
@@ -207,18 +205,15 @@ class Unit(Agent):
 
     def move_rs(self):
         """Defines the Random Search pattern"""
-        print(f'cell: x,y = {self.new_point} en zelf: x,y = {self.xy_to_cell()}')
+        print(f'RS zoekpatroon: cell: x,y = {self.new_point} en zelf: x,y = {self.xy_to_cell()}')
 
         self.move_to(self.new_point)
 
         if self.new_point in self.model.grid.get_neighborhood((self.x_cell, self.y_cell), moore=True,
                                                               include_center=False, radius=1):
             random_x = random.randrange(self.model.A[0], self.model.B[0])
-            print(f'x:random range uit: {self.model.A[0], self.model.B[0]}')
             random_y = random.randrange(self.model.A[1], self.model.C[1])
-            print(f'y: random range uit: {self.model.A[1], self.model.C[1]}')
             self.new_point = (random_x, random_y)
-            print(f'nwe_point is nu: {self.new_point}')
 
     def go_to_middle(self):
         midden_x = int((self.model.B[0] + self.model.A[0]) / 2)
@@ -234,8 +229,7 @@ class Unit(Agent):
         """Does the searching unit have the person in its search radius,
         will they spot them according to assigned finding probability, determined by wind and wave height."""
         field = self.model.grid.get_neighborhood(self.xy_to_cell(), moore=True, include_center=False, radius=radius)
-        print(f'Unit is now at: ({self.xy_to_cell()}) ')
-        # print(f'Unit is looking in field with radius: {field}')
+        print(f'Unit is now at: {self.xy_to_cell()}')
         agents_in_range = {}
         for cell in field:
             agents = self.model.grid.get_cell_list_contents(cell)
@@ -314,5 +308,11 @@ class Unit(Agent):
             """How does the unit move due to the current"""
             # self.move_current()
 
-            cell = self.xy_to_cell()
-            self.model.grid.move_agent(self, cell)
+            x, y = self.xy_to_cell()
+            print(f'max x: {self.model.width}, max y: {self.model.height}')
+            print(f'location of unit {x, y}')
+            if 0 > x >= self.model.width or 0 > y >= self.model.height:
+                self.model.running = False
+                print(f'Unit left the field at {x}, {y}')
+            else:
+                self.model.grid.move_agent(self, (x, y))

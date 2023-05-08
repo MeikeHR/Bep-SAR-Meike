@@ -9,10 +9,12 @@ from SarUnit import Unit
 from SarEnvironment import Environment
 from SarMissingPerson import MissingPerson
 
+width = 100
+height = 60
 
 params = {
-    "height": 100,
-    "width": 60,
+    "height": height,
+    "width": width,
     "search_pattern": UserSettableParameter('choice', "Zoekpatroon", value='Parallel Sweep',
                                             choices=['Parallel Sweep',
                                                      'Expanding Square',
