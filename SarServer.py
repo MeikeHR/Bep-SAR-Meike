@@ -9,10 +9,12 @@ from SarUnit import Unit
 from SarEnvironment import Environment
 from SarMissingPerson import MissingPerson
 
+width = 100
+height = 60
 
 params = {
-    "height": 100,
-    "width": 60,
+    "height": height,
+    "width": width,
     "search_pattern": UserSettableParameter('choice', "Zoekpatroon", value='Parallel Sweep',
                                             choices=['Parallel Sweep',
                                                      'Expanding Square',
@@ -30,7 +32,8 @@ params = {
     "wind": UserSettableParameter("slider", "Windsnelheid (m/s)", 8, 8, 10, 1),
     "stamina": UserSettableParameter("slider", "Conditie (-)", 1800, 900, 3600, 100),
     "profile": UserSettableParameter("slider", "Profiel (-)", 1, 1, 2, 1),
-    "tijd_melding": UserSettableParameter("slider", "Uitruktijd (min)", 10, 0, 15, 5)
+    "tijd_melding": UserSettableParameter("slider", "Uitruktijd (min)", 5, 0, 15, 5),
+    "seed":UserSettableParameter('number', 'Seed', value=100)
 }
 
 
