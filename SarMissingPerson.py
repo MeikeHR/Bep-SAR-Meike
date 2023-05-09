@@ -22,8 +22,6 @@ class MissingPerson(Agent):
 
         self.tick = 0
 
-        # random.seed(seed)
-
     def init_stamina(self, stamina):
         if self.swimming_ability == "GOED":
             return stamina
@@ -98,14 +96,18 @@ class MissingPerson(Agent):
             self.x += x_random * self.swimming_speed
             self.y += y_random * self.swimming_speed
 
-            self.stamina -= 2
+            self.stamina -= 1
             print(f'x_random * sw: {x_random * self.swimming_speed}, y_random * sw: {y_random*self.swimming_speed}')
 
     def move_wind(self):
         if self.wind_richting == "NOORD":
             graden = 180
-        else:
+        elif self.wind_richting == "ZUID":
             graden = 0
+        elif self.wind_richting == "OOST":
+            graden = 90
+        else:
+            graden = 270
 
         """Bereken de daadwerkelijke invloed van de windsnelheid op de drift snelheid"""
         factor = random.randrange(9, 12) / 1000
@@ -118,22 +120,18 @@ class MissingPerson(Agent):
         self.x += leeway_x
         self.y += leeway_y
 
-        # print(f'richting: {self.wind_richting}, snelheid: {self.wind}')
-        # print(f'orig graden: {graden}, richting_stap: {richting}graden, factor: {factor}')
-        # print(f'x_meters {leeway_x}, y_meters {leeway_y}')
-
     def move_random(self):
-        # dx = random.randrange(-15, 20, 5) / 15 * self.swimming_speed / 2
-        # dy = random.randrange(-15, 20, 5) / 15 * self.swimming_speed / 2
-        # print(f'dx: {dx}, dy: {dy}')
-        # self.x += dx
-        # self.y += dy
+        dx = random.randrange(-15, 20, 5) / 15 * self.swimming_speed / 2
+        dy = random.randrange(-15, 20, 5) / 15 * self.swimming_speed / 2
+        print(f'random movement mp --> dx: {dx}, dy: {dy}')
+        self.x += dx
+        self.y += dy
         pass
 
     def step(self):
         self.tick += 1
-        print(f'stamina: {self.stamina}')
-        print(f'tick < melding{self.tick} < {self.model.tijd_melding_sec}')
+        # print(f'stamina: {self.stamina}')
+        # print(f'tick < melding{self.tick} < {self.model.tijd_melding_sec}')
         if self.stamina > 0:
             """How will the person move due to the current in the given cell"""
             if self.tick < self.model.tijd_melding_sec:
