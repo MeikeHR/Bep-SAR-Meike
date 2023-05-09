@@ -57,11 +57,12 @@ class SearchAndRescue(Model):
             self.grid.place_agent(cell, (x, y))
 
         """Place the missing person in the grid"""
-        pos_mp = (random.randrange(10,30), random.randrange(5,15))
+        pos_mp = (random.randrange(15, 40), random.randrange(5, 15))
         # pos_mp = (random.randrange(30, 60), random.randrange(30, 50))
         swimming_speed = 0.4
         missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, stamina, profile,
                                        swimming_speed, swimming_ability, seed)
+        self.pos_mp_begin = pos_mp
         self.schedule.add(missing_person)
         self.grid.place_agent(missing_person, pos_mp)
 
@@ -83,9 +84,9 @@ class SearchAndRescue(Model):
         if self.wind == 8.0:
             return 90
         elif self.wind == 9.0:
-            return 70
+            return 75
         else:
-            return 50
+            return 60
 
     def init_current(self, x, y):
         breedte = 6
@@ -116,10 +117,10 @@ class SearchAndRescue(Model):
 
     def zoekgebied(self):
         "Initiele zoekgebied"
-        A = [100, 60]
-        B = [1200, 60]
-        C = [100, 720]
-        D = [1200, 720]
+        A = [200, 60]
+        B = [1300, 60]
+        C = [200, 720]
+        D = [1300, 720]
 
         "Invloed van tijd en stroming"
         dx = int(self.tijd_melding_sec * self.upper_current)

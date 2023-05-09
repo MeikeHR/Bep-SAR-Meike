@@ -15,7 +15,7 @@ single_seed = False
 if not Experimenting and not single_seed:
     server.launch()
 elif Experimenting and not single_seed:
-    num_iterations = 20
+    num_iterations = 50
 
     seed_list = []
     search_pattern_list = []
@@ -30,24 +30,27 @@ elif Experimenting and not single_seed:
     wind_richting_list = []
     tijd_list = []
     stamina_eind_list = []
+    location_list = []
+    location_begin_list = []
 
     for i in range(0, num_iterations):
 
         width = 100
         height = 60
-        search_pattern = "Parallel Sweep"
-        search_radius = 125
-        max_current = 1.5
-        upper_current = 0.5
-        wind = 8
-        stamina = 3600
-        profile = 1
-        swimming_ability = "GOED"
-        tijd_melding = 5
-        wind_richting = "ZUID"
-        seed_n = 200
+        stamina = 2400
+        search_radius = 100
+        seed_n = 41308
         seed = seed_n + i
         random.seed(seed)
+
+        search_pattern = "Parallel Sweep"
+        max_current = 1.5
+        upper_current = 0.41
+        wind = 10
+        profile = 1
+        swimming_ability = "GOED"
+        tijd_melding = 15
+        wind_richting = "OOST"
 
         print(f"running experiment {i} with seed {seed}")
 
@@ -81,6 +84,9 @@ elif Experimenting and not single_seed:
         wind_richting_list.append(wind_richting)
         tijd_list.append(model.step_counter)
         stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
         stamina_eind_list.append(stamina_eind[0])
 
 
@@ -96,7 +102,9 @@ elif Experimenting and not single_seed:
                 "Windsnelheid": wind_list,
                 "Uitruktijd": tijd_melding_list,
                 "Overgebleven conditie": stamina_eind_list,
-                "Vind tijd": tijd_list
+                "Vind tijd": tijd_list,
+                "Locatie begin": location_begin_list,
+                "Locatie eind": location_list
                 }
 
     df = pd.DataFrame(raw_data)

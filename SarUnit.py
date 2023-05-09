@@ -14,11 +14,9 @@ class Unit(Agent):
         self.x = x * 20
         self.y = y * 20
 
-        # random.seed(seed)
-
         self.x_cell, self.y_cell = self.xy_to_cell()
 
-        self.speed = 12.86
+        self.speed = 12.86 / 2
 
         self.going_up = False
         self.going_right = True
@@ -42,7 +40,6 @@ class Unit(Agent):
         self.baan_SS = "KORT"
 
         "Random search variables"
-        # random.seed(self.model.seed)
         random_x = random.randrange(self.model.A[0], self.model.B[0])
         random_y = random.randrange(self.model.A[1], self.model.C[1])
         self.new_point = (random_x, random_y)
@@ -81,13 +78,13 @@ class Unit(Agent):
 
     def move_ps(self):
         """Defines the Parallel Sweep search pattern"""
-        print(f'Moving due to PS pattern')
+        # print(f'Moving due to PS pattern')
         self.tick_ps += 1
         track_spacing = self.model.search_radius * 2
 
         ticks_lang = int((((self.model.B[0] - self.model.A[0])*20) / self.speed))
         ticks_kort = int(track_spacing*20 / self.speed)
-        print(f'With ticks: {self.tick_ps}, max ticks lang: {ticks_lang}, en baan: {self.lang_kort_ps}')
+        print(f'With ticks: {self.tick_ps}, max ticks lang: {ticks_lang}, kort: {ticks_kort}, en baan: {self.lang_kort_ps}')
 
         if self.lang_kort_ps == "LANG":
             "Is de boot bij het eind van de slag?"
@@ -107,7 +104,7 @@ class Unit(Agent):
                 else:
                     self.x -= self.speed
 
-        if self.lang_kort_ps == "KORT":
+        else:
             "Is de boot bij het eind van de slag?"
             if self.tick_ps == ticks_kort:
                 self.lang_kort_ps = "LANG"
@@ -241,7 +238,9 @@ class Unit(Agent):
 
         if any(agent_key == "mp" for agent_key in agents_in_range.keys()):
             position_missing_person = agents_in_range["mp"]
-            if random.randrange(0, 100) < self.model.finding_prob:
+            chance = random.randrange(0, 100)
+            print(f'{chance} < of > {self.model.finding_prob}')
+            if chance < self.model.finding_prob:
                 print(f'Unit found agent at {position_missing_person}, now')
                 return position_missing_person
         return ()
@@ -311,7 +310,7 @@ class Unit(Agent):
             x, y = self.xy_to_cell()
             print(f'max x: {self.model.width}, max y: {self.model.height}')
             print(f'location of unit {x, y}')
-            if 0 > x >= self.model.width or 0 > y >= self.model.height:
+            if x < 0 or x >= self.model.width or y < 0 or y >= self.model.height:
                 self.model.running = False
                 print(f'Unit left the field at {x}, {y}')
             else:
