@@ -7,8 +7,6 @@ from SarMissingPerson import MissingPerson
 
 import pandas as pd
 
-
-
 # Set to True if  you want to experiment and to False if you want to see the running server
 Experimenting = False
 single_seed = False
