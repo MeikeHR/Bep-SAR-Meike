@@ -21,7 +21,6 @@ class SearchAndRescue(Model):
                  max_current=1.5,
                  upper_current=0.5,
                  wind=8,
-                 stamina=1800,
                  profile=1,
                  swimming_ability="GOED",
                  tijd_melding=5,
@@ -60,6 +59,8 @@ class SearchAndRescue(Model):
         pos_mp = (random.randrange(15, 45), random.randrange(5, 15))
         # pos_mp = (random.randrange(30, 60), random.randrange(30, 50))
         swimming_speed = 0.4
+        stamina = random.randrange (1800, 3600)
+        self.stamina = stamina
         missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, stamina, profile,
                                        swimming_speed, swimming_ability, seed)
         self.pos_mp_begin = pos_mp
@@ -76,9 +77,6 @@ class SearchAndRescue(Model):
 
         self.step_counter = 0
         self.running = True
-
-        print(random.random())
-        print(self.random.random())
 
     def finding_probability(self):
         if self.wind == 8.0:

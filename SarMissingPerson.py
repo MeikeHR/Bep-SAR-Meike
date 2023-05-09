@@ -96,19 +96,18 @@ class MissingPerson(Agent):
             self.x += x_random * self.swimming_speed
             self.y += y_random * self.swimming_speed
 
-            self.stamina -= 2
+            self.stamina -= 1
             print(f'x_random * sw: {x_random * self.swimming_speed}, y_random * sw: {y_random*self.swimming_speed}')
 
     def move_wind(self):
-        # if self.wind_richting == "NOORD":
-        #     graden = 180
-        # else:
-        #     graden = 0
-
-        if self.wind_richting == "OOST":
+        if self.wind_richting == "NOORD":
+            graden = 180
+        elif self.wind_richting == "ZUID":
+            graden = 0
+        elif self.wind_richting == "OOST":
             graden = 90
         else:
-            graden = 180+90
+            graden = 270
 
         """Bereken de daadwerkelijke invloed van de windsnelheid op de drift snelheid"""
         factor = random.randrange(9, 12) / 1000
