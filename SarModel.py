@@ -57,7 +57,7 @@ class SearchAndRescue(Model):
             self.grid.place_agent(cell, (x, y))
 
         """Place the missing person in the grid"""
-        pos_mp = (random.randrange(15, 40), random.randrange(5, 15))
+        pos_mp = (random.randrange(15, 45), random.randrange(5, 15))
         # pos_mp = (random.randrange(30, 60), random.randrange(30, 50))
         swimming_speed = 0.4
         missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, stamina, profile,

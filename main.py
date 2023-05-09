@@ -8,7 +8,7 @@ from SarMissingPerson import MissingPerson
 import pandas as pd
 
 # Set to True if  you want to experiment and to False if you want to see the running server
-Experimenting = False
+Experimenting = True
 single_seed = False
 # Run the server and do manual experiments
 
@@ -87,8 +87,7 @@ elif Experimenting and not single_seed:
         location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
         location_list.append(location_eind[0])
         location_begin_list.append(model.pos_mp_begin)
-        stamina_eind_list.append(stamina_eind[0])
-
+        stamina_eind_list.append(int(stamina_eind[0]))
 
     raw_data = {"Seed": seed_list,
                 "Search pattern": search_pattern_list,

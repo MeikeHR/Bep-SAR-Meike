@@ -22,8 +22,6 @@ class MissingPerson(Agent):
 
         self.tick = 0
 
-        # random.seed(seed)
-
     def init_stamina(self, stamina):
         if self.swimming_ability == "GOED":
             return stamina
