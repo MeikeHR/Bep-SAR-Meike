@@ -10,7 +10,6 @@ import pandas as pd
 # Set to True if  you want to experiment and to False if you want to see the running server
 Experimenting = True
 single_seed = False
-# Run the server and do manual experiments
 
 if not Experimenting and not single_seed:
     server.launch()
