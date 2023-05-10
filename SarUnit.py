@@ -16,7 +16,8 @@ class Unit(Agent):
 
         self.x_cell, self.y_cell = self.xy_to_cell()
 
-        self.speed = 12.86
+        # self.speed = 12.86
+        self.speed = 10.30
 
         self.going_up = False
         self.going_right = True

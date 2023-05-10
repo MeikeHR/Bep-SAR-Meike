@@ -57,9 +57,8 @@ class SearchAndRescue(Model):
 
         """Place the missing person in the grid"""
         pos_mp = (random.randrange(15, 45), random.randrange(5, 15))
-        # pos_mp = (random.randrange(30, 60), random.randrange(30, 50))
         swimming_speed = 0.4
-        stamina = random.randrange (1800, 3600)
+        stamina = random.randrange(2400, 5400)
         self.stamina = stamina
         missing_person = MissingPerson(999, pos_mp[0], pos_mp[1], self, stamina, profile,
                                        swimming_speed, swimming_ability, seed)
@@ -79,9 +78,9 @@ class SearchAndRescue(Model):
         self.running = True
 
     def finding_probability(self):
-        max_prob = 90
+        max_prob = 80
         min_prob = 60
-        probability = 90 - (max_prob-min_prob) * (self.wind - 8) / (10-8)
+        probability = max_prob - (max_prob-min_prob) * (self.wind - 8) / (10-8)
         return int(probability)
         # if self.wind == 8.0:
         #     return 90
