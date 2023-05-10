@@ -33,6 +33,8 @@ class SearchAndRescue(Model):
         self.width = width
         self.height = height
 
+        self.found = False
+
         self.search_pattern = search_pattern
         self.max_current = max_current
         self.upper_current = upper_current
@@ -78,8 +80,8 @@ class SearchAndRescue(Model):
         self.running = True
 
     def finding_probability(self):
-        max_prob = 80
-        min_prob = 60
+        max_prob = 85
+        min_prob = 65
         probability = max_prob - (max_prob-min_prob) * (self.wind - 8) / (10-8)
         return int(probability)
 

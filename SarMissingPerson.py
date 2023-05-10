@@ -91,7 +91,7 @@ class MissingPerson(Agent):
         """Persoon zwemt een willekeurige kant op, er vanuit gaande dat deze nauwelijks kan zien waar het strand is."""
         if self.profile == 2:
             x_random = 2 * random.randrange(-5, 5, 1) / 10
-            y_random = 2 * random.randrange(-5, 1, 1) / 10
+            y_random = 2 * random.randrange(-5, 5, 1) / 10
 
             self.x += x_random * self.swimming_speed
             self.y += y_random * self.swimming_speed

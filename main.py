@@ -14,7 +14,7 @@ single_seed = False
 if not Experimenting and not single_seed:
     server.launch()
 elif Experimenting and not single_seed:
-    num_iterations = 50
+    num_iterations = 5
 
     seed_list = []
     search_pattern_list = []
@@ -31,9 +31,10 @@ elif Experimenting and not single_seed:
     location_list = []
     location_begin_list = []
     stamina_begin = []
+    found_list = []
 
     for i in range(0, num_iterations):
-
+        """Scenario 1"""
         width = 100
         height = 60
         search_radius = 100
@@ -46,6 +47,776 @@ elif Experimenting and not single_seed:
 
         upper_current = 0.41
         wind = 10
+        profile = 1
+        swimming_ability = "GOED"
+        tijd_melding = 5
+        wind_richting = "OOST"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 2"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 200
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.41
+        wind = 10
+        profile = 1
+        swimming_ability = "SLECHT"
+        tijd_melding = 5
+        wind_richting = "ZUID"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 3"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 300
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.41
+        wind = 8
+        profile = 2
+        swimming_ability = "GOED"
+        tijd_melding = 5
+        wind_richting = "ZUID"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 4"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 400
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.41
+        wind = 8
+        profile = 2
+        swimming_ability = "SLECHT"
+        tijd_melding = 5
+        wind_richting = "OOST"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 5"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 500
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.77
+        wind = 8
+        profile = 2
+        swimming_ability = "GOED"
+        tijd_melding = 15
+        wind_richting = "ZUID"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 6"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 600
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.77
+        wind = 8
+        profile = 1
+        swimming_ability = "SLECHT"
+        tijd_melding = 15
+        wind_richting = "OOST"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 7"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 700
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.77
+        wind = 10
+        profile = 2
+        swimming_ability = "GOED"
+        tijd_melding = 15
+        wind_richting = "OOST"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 8"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 800
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.77
+        wind = 10
+        profile = 2
+        swimming_ability = "SLECHT"
+        tijd_melding = 15
+        wind_richting = "ZUID"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 9"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 900
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.41
+        wind = 8
+        profile = 1
+        swimming_ability = "GOED"
+        tijd_melding = 15
+        wind_richting = "OOST"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 10"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 1000
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.41
+        wind = 8
+        profile = 1
+        swimming_ability = "SLECHT"
+        tijd_melding = 15
+        wind_richting = "ZUID"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 11"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 1100
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.41
+        wind = 10
+        profile = 2
+        swimming_ability = "GOED"
+        tijd_melding = 15
+        wind_richting = "ZUID"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 12"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 1200
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.41
+        wind = 10
+        profile = 2
+        swimming_ability = "SLECHT"
+        tijd_melding = 15
+        wind_richting = "OOST"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 13"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 1300
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.77
+        wind = 10
+        profile = 1
+        swimming_ability = "GOED"
+        tijd_melding = 5
+        wind_richting = "ZUID"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 14"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 1400
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.77
+        wind = 10
+        profile = 1
+        swimming_ability = "SLECHT"
+        tijd_melding = 5
+        wind_richting = "OOST"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 15"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 1500
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.77
+        wind = 8
         profile = 2
         swimming_ability = "GOED"
         tijd_melding = 5
@@ -86,6 +857,64 @@ elif Experimenting and not single_seed:
         location_list.append(location_eind[0])
         location_begin_list.append(model.pos_mp_begin)
         stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+        """Scenario 16"""
+        width = 100
+        height = 60
+        search_radius = 100
+        seed_n = 1600
+        seed = seed_n + i
+        random.seed(seed)
+        max_current = 2.0
+
+        search_pattern = "Parallel Sweep"
+
+        upper_current = 0.77
+        wind = 8
+        profile = 2
+        swimming_ability = "SLECHT"
+        tijd_melding = 5
+        wind_richting = "ZUID"
+
+        print(f"running experiment {i} with seed {seed}")
+
+        model = SearchAndRescue(width, height,
+                                search_pattern,
+                                search_radius,
+                                max_current,
+                                upper_current,
+                                wind,
+                                profile,
+                                swimming_ability,
+                                tijd_melding,
+                                wind_richting,
+                                seed
+                                )
+
+        while model.running:
+            model.step()
+
+        seed_list.append(seed)
+        search_pattern_list.append(search_pattern)
+        search_radius_list.append(search_radius)
+        max_current_list.append(max_current)
+        upper_current_list.append(upper_current)
+        profile_list.append(profile)
+        tijd_melding_list.append(tijd_melding)
+        swimming_ability_list.append(swimming_ability)
+        wind_list.append(wind)
+        wind_richting_list.append(wind_richting)
+        tijd_list.append(model.step_counter)
+        stamina_begin.append(model.stamina)
+        stamina_eind = [a.stamina for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_eind = [a.xy_to_cell() for a in model.schedule.agents if isinstance(a, MissingPerson)]
+        location_list.append(location_eind[0])
+        location_begin_list.append(model.pos_mp_begin)
+        stamina_eind_list.append(int(stamina_eind[0]))
+        found_list.append(model.found)
+
+
 
     raw_data = {"Seed": seed_list,
                 "Search pattern": search_pattern_list,
@@ -101,7 +930,8 @@ elif Experimenting and not single_seed:
                 "Overgebleven conditie": stamina_eind_list,
                 "Vind tijd": tijd_list,
                 "Locatie begin": location_begin_list,
-                "Locatie eind": location_list
+                "Locatie eind": location_list,
+                "Gevonden": found_list
                 }
 
     df = pd.DataFrame(raw_data)
@@ -164,7 +994,8 @@ elif Experimenting and single_seed:
                 "Windsnelheid": wind_list,
                 "Uitruktijd": tijd_melding_list,
                 "Overgebleven conditie": stamina_eind_list,
-                "Vind tijd": tijd_list
+                "Vind tijd": tijd_list,
+
                 }
 
     df = pd.DataFrame(raw_data)
