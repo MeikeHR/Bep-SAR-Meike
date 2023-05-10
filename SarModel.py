@@ -82,14 +82,6 @@ class SearchAndRescue(Model):
         min_prob = 60
         probability = max_prob - (max_prob-min_prob) * (self.wind - 8) / (10-8)
         return int(probability)
-        # if self.wind == 8.0:
-        #     return 90
-        # elif self.wind == 9.0:
-        #     return 75
-        # else:
-        #     return 60
-
-
 
     def init_current(self, x, y):
         breedte = 6
