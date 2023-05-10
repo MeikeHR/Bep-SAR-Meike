@@ -10,7 +10,6 @@ import pandas as pd
 # Set to True if  you want to experiment and to False if you want to see the running server
 Experimenting = True
 single_seed = False
-# Run the server and do manual experiments
 
 if not Experimenting and not single_seed:
     server.launch()
@@ -38,17 +37,18 @@ elif Experimenting and not single_seed:
         width = 100
         height = 60
         search_radius = 100
-        seed_n = 600
+        seed_n = 100
         seed = seed_n + i
         random.seed(seed)
+        max_current = 2.0
 
         search_pattern = "Parallel Sweep"
-        max_current = 2.0
-        upper_current = 0.77
+
+        upper_current = 0.41
         wind = 10
         profile = 2
         swimming_ability = "GOED"
-        tijd_melding = 15
+        tijd_melding = 5
         wind_richting = "OOST"
 
         print(f"running experiment {i} with seed {seed}")
@@ -105,7 +105,7 @@ elif Experimenting and not single_seed:
                 }
 
     df = pd.DataFrame(raw_data)
-    filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results3.txt'
+    filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_1.txt'
     # version = f'{i}'
     # filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_test' + version
     df.to_csv(filepath)
