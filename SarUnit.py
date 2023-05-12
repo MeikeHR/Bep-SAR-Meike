@@ -21,7 +21,7 @@ class Unit(Agent):
         self.tick = 0
 
         "Parallel sweep variables"
-        self.tick_ps = 0
+        self.tick_pattern = 0
         self.lang_kort_ps = "LANG"
         self.richting_ps = 'RECHTS'
 
@@ -74,17 +74,17 @@ class Unit(Agent):
     def move_ps(self):
         """Defines the Parallel Sweep search pattern"""
         # print(f'Moving due to PS pattern')
-        self.tick_ps += 1
+        self.tick_pattern += 1
         track_spacing = self.model.search_radius * 2
 
         ticks_lang = int((((self.model.B[0] - self.model.A[0])*20) / self.speed))
         ticks_kort = int(track_spacing*20 / self.speed)
-        print(f'With ticks: {self.tick_ps}, max ticks lang: {ticks_lang}, kort: {ticks_kort}, en baan: {self.lang_kort_ps}')
+        print(f'With ticks: {self.tick_pattern}, max ticks lang: {ticks_lang}, kort: {ticks_kort}, en baan: {self.lang_kort_ps}')
 
         if self.lang_kort_ps == "LANG":
             "Is de boot bij het eind van de slag?"
-            if self.tick_ps == ticks_lang:
-                self.tick_ps = 0
+            if self.tick_pattern == ticks_lang:
+                self.tick_pattern = 0
                 self.lang_kort_ps = "KORT"
                 if self.richting_ps == "RECHTS":
                     self.x += self.speed
@@ -101,10 +101,10 @@ class Unit(Agent):
 
         else:
             "Is de boot bij het eind van de slag?"
-            if self.tick_ps == ticks_kort:
+            if self.tick_pattern == ticks_kort:
                 self.lang_kort_ps = "LANG"
                 self.y += self.speed
-                self.tick_ps = 0
+                self.tick_pattern = 0
             else:
                 self.y += self.speed
 
@@ -115,20 +115,20 @@ class Unit(Agent):
         if not self.reached_middle:
             self.go_to_middle()
         else:
-            self.tick_ps += 1
+            self.tick_pattern += 1
             ticks = int(afstand * self.factor_ES / self.speed)
 
-            if self.tick_ps == ticks:
+            if self.tick_pattern == ticks:
                 if self.baan == "EERSTE":
                     self.baan = "TWEEDE"
-                    self.tick_ps = 0
+                    self.tick_pattern = 0
                     if self.factor_ES % 2 == 0:
                         self.x += self.speed
                     else:
                         self.x -= self.speed
                 else:
                     self.baan = "EERSTE"
-                    self.tick_ps = 0
+                    self.tick_pattern = 0
                     self.factor_ES += 1
                     if self.factor_ES % 2 == 0:
                         self.y -= self.speed
@@ -162,33 +162,33 @@ class Unit(Agent):
         if not self.reached_middle:
             self.go_to_middle()
         else:
-            self.tick_ps += 1
+            self.tick_pattern += 1
             if self.eerste == "JA":
-                if self.tick_ps == ticks_kort:
+                if self.tick_pattern == ticks_kort:
                     self.eerste = "NEE"
                     self.x += v_x
                     self.y += v_y
-                    self.tick_ps = 0
+                    self.tick_pattern = 0
                     self.hoek += 120
                 else:
                     self.x += v_x
                     self.y += v_y
             else:
                 if self.baan_SS == "KORT":
-                    if self.tick_ps == ticks_kort:
+                    if self.tick_pattern == ticks_kort:
                         self.x += v_x
                         self.y += v_y
-                        self.tick_ps = 0
+                        self.tick_pattern = 0
                         self.hoek += 120
                         self.baan_SS = "LANG"
                     else:
                         self.x += v_x
                         self.y += v_y
                 else:
-                    if self.tick_ps == ticks_lang:
+                    if self.tick_pattern == ticks_lang:
                         self.x += v_x
                         self.y += v_y
-                        self.tick_ps = 0
+                        self.tick_pattern = 0
                         self.hoek += 120
                         self.baan_SS = "KORT"
                     else:
