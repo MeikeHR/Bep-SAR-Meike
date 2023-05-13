@@ -275,13 +275,13 @@ class Unit(Agent):
 
         else:
             if x_mp - x > 0:
-                self.x += self.speed
+                self.x += self.speed / math.sqrt(2)
             else:
-                self.x -= self.speed
+                self.x -= self.speed / math.sqrt(2)
             if y_mp - y > 0:
-                self.y += self.speed
+                self.y += self.speed / math.sqrt(2)
             else:
-                self.y -= self.speed
+                self.y -= self.speed / math.sqrt(2)
             agents = self.model.grid.get_cell_list_contents((self.xy_to_cell()))
             if any(isinstance(agent, MissingPerson) for agent in agents):
                 self.model.running = False

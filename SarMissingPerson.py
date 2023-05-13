@@ -47,7 +47,7 @@ class MissingPerson(Agent):
         self.y += current_y
         self.x += current_x
 
-    def move_swim(self):
+    def move_swim_old(self):
         """Defines the persons swimming choices, will later be defined by personal traits"""
         cell_now = self.xy_to_cell()
         x_cell, y_cell = cell_now
@@ -78,7 +78,7 @@ class MissingPerson(Agent):
             self.y -= self.swimming_speed
             self.stamina -= 3
 
-    def move_swim_new(self):
+    def move_swim(self):
         """Defines the persons swimming choices, will later be defined by personal traits"""
         cell_now = self.xy_to_cell()
         x_cell, y_cell = cell_now
@@ -126,7 +126,6 @@ class MissingPerson(Agent):
         print(f'random movement mp --> dx: {dx}, dy: {dy}')
         self.x += dx
         self.y += dy
-        pass
 
     def step(self):
         self.tick += 1
@@ -137,8 +136,8 @@ class MissingPerson(Agent):
             if self.tick < self.model.tijd_melding_sec:
                 self.move_current()
             """How will the person move due to its own swimming and choices"""
-            # self.move_swim()
-            self.move_swim_new()
+            # self.move_swim_old()
+            self.move_swim()
             """How will the person move due to the wind in the model"""
             self.move_wind()
             """How will the person move randomly"""
@@ -159,7 +158,7 @@ class MissingPerson(Agent):
                 self.model.grid.move_agent(self, cell)
 
             """Stamina neemt altijd af, dit zal meer zijn bij slechtere weersomstandigheden"""
-            stamina_stap = (self.wind - 8)/2 + 1
+            stamina_stap = (self.wind - 8)/(10-8) + 1
             self.stamina -= stamina_stap
         else:
             self.model.running = False
