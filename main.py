@@ -8,8 +8,8 @@ from SarMissingPerson import MissingPerson
 import pandas as pd
 
 """Deze booleans bepalen het type uit te voeren experiment, uitleg staat in de bijlage"""
-experimenting = False
-alle_scenarios = False
+experimenting = True
+alle_scenarios = True
 single_seed = False
 
 if not experimenting and not single_seed:
@@ -146,7 +146,7 @@ if experimenting and not single_seed and not alle_scenarios:
 """Gebruik deze waardes voor de booleans als alle scenarios wilt uitvoeren, uitleg over gebruik staat in de bijlage"""
 if experimenting and not single_seed and alle_scenarios:
     scenario_counter = 0
-    basis_seed = 100000
+    basis_seed = 1000000
     num_iterations = 500
 
     seed_list = []
@@ -1164,7 +1164,7 @@ if experimenting and not single_seed and alle_scenarios:
                 }
 
     df = pd.DataFrame(raw_data)
-    filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_1.txt'
+    filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_15_05_2023.txt'
     # version = f'{i}'
     # filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_test' + version
     df.to_csv(filepath)
