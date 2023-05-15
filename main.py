@@ -145,7 +145,6 @@ if experimenting and not single_seed and not alle_scenarios:
 
 """Gebruik deze waardes voor de booleans als alle scenarios wilt uitvoeren, uitleg over gebruik staat in de bijlage"""
 if experimenting and not single_seed and alle_scenarios:
-    scenario_counter = 0
     basis_seed = 1000000
     num_iterations = 500
 
@@ -167,7 +166,8 @@ if experimenting and not single_seed and alle_scenarios:
     found_list = []
     actieduur_list = []
 
-    for i in range(0, num_iterations):
+    for i in range(1, num_iterations+1):
+        scenario_counter = 0
         """Scenario 1"""
         scenario_counter += 1
         width = 100
@@ -1164,7 +1164,7 @@ if experimenting and not single_seed and alle_scenarios:
                 }
 
     df = pd.DataFrame(raw_data)
-    filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_15_05_2023.txt'
+    filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_1.txt'
     # version = f'{i}'
     # filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_test' + version
     df.to_csv(filepath)
