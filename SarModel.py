@@ -36,11 +36,12 @@ class SearchAndRescue(Model):
         self.found = False
 
         self.search_pattern = search_pattern
-        self.max_current = max_current
+        self.max_current = 2.0
         self.upper_current = upper_current
         self.wind = wind
         self.wind_richting = wind_richting
 
+        search_radius = 100
         self.search_radius = int(search_radius / 20)
         self.tijd_melding_sec = tijd_melding * 60
         self.finding_prob = self.finding_probability()
