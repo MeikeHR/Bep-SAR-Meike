@@ -155,8 +155,8 @@ if experimenting and not single_seed and not alle_scenarios and not deelvraag:
 
 """Gebruik deze waardes voor de booleans als alle scenarios wilt uitvoeren, uitleg over gebruik staat in de bijlage"""
 if experimenting and not single_seed and alle_scenarios and not deelvraag:
-    basis_seed = 1000000
-    num_iterations = 2
+    basis_seed = 10000
+    num_iterations = 500
 
     seed_list = []
     search_pattern_list = []
@@ -1174,9 +1174,7 @@ if experimenting and not single_seed and alle_scenarios and not deelvraag:
                 }
 
     df = pd.DataFrame(raw_data)
-    filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_Replicaties.txt'
-    # version = f'{i}'
-    # filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_test' + version
+    filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_Replicaties2.txt'
     df.to_csv(filepath)
 
 elif experimenting and single_seed and not deelvraag:
