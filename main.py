@@ -149,8 +149,6 @@ if experimenting and not single_seed and not alle_scenarios and not deelvraag:
 
     df = pd.DataFrame(raw_data)
     filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_Deelvraag2.txt'
-    # version = f'{i}'
-    # filepath = r'C:/Users/mhrb0/PycharmProjects/MesaPractise/Results/Results_test' + version
     df.to_csv(filepath)
 
 """Gebruik deze waardes voor de booleans als alle scenarios wilt uitvoeren, uitleg over gebruik staat in de bijlage"""
