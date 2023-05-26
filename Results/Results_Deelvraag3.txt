@@ -1,0 +1,31 @@
+,Seed,Search pattern,Search radius,Max_current,Upper current,Profile,Zwemvaardgheid,Windrichting,Windsnelheid,Uitruktijd,Stamina begin,Overgebleven conditie,Vind tijd,Locatie begin,Locatie eind,Gevonden,Actieduur
+0,14000001,Parallel Sweep,100,2.0,0.77,1,SLECHT,OOST,8,15,3831,1347,1207,"(33, 10)","(67, 15)",True,307.00
+1,15000001,Parallel Sweep,100,2.0,0.77,2,GOED,OOST,10,15,4013,266,1249,"(16, 8)","(48, 11)",True,349.00
+2,16000001,Parallel Sweep,100,2.0,0.41,1,GOED,OOST,8,15,3991,2844,1147,"(41, 8)","(59, 12)",True,247.00
+3,17000001,Parallel Sweep,100,2.0,0.77,2,SLECHT,OOST,8,15,4381,810,1055,"(42, 5)","(74, 6)",True,155.00
+4,18000001,Parallel Sweep,100,2.0,0.77,1,SLECHT,OOST,10,15,4485,636,1177,"(44, 8)","(78, 13)",True,277.00
+5,19000001,Parallel Sweep,100,2.0,0.41,2,SLECHT,OOST,10,15,4856,-2,1081,"(27, 8)","(43, 11)",False,Niet gevonden
+6,20000001,Parallel Sweep,100,2.0,0.77,2,SLECHT,OOST,10,15,3241,-2,722,"(17, 10)","(43, 12)",False,Niet gevonden
+7,20000001,Parallel Sweep,100,2.0,0.77,2,SLECHT,OOST,10,15,3241,-2,722,"(17, 10)","(43, 12)",False,Niet gevonden
+8,20000001,Parallel Sweep,100,2.0,0.77,2,SLECHT,ZUID,10,15,3241,-2,722,"(17, 10)","(46, 8)",False,Niet gevonden
+9,20000001,Parallel Sweep,100,2.0,0.77,2,SLECHT,ZUID,10,15,3241,-2,722,"(17, 10)","(46, 8)",False,Niet gevonden
+10,14000002,Parallel Sweep,100,2.0,0.77,1,SLECHT,OOST,8,15,3956,1417,1220,"(25, 9)","(60, 14)",True,320.00
+11,15000002,Parallel Sweep,100,2.0,0.77,2,GOED,OOST,10,15,3792,132,1220,"(30, 13)","(61, 16)",True,320.00
+12,16000002,Parallel Sweep,100,2.0,0.41,1,GOED,OOST,8,15,2467,1276,1191,"(22, 9)","(40, 13)",True,291.00
+13,17000002,Parallel Sweep,100,2.0,0.77,2,SLECHT,OOST,8,15,4065,280,1215,"(30, 12)","(62, 14)",True,315.00
+14,18000002,Parallel Sweep,100,2.0,0.77,1,SLECHT,OOST,10,15,2938,-1,981,"(32, 10)","(66, 14)",False,Niet gevonden
+15,19000002,Parallel Sweep,100,2.0,0.41,2,SLECHT,OOST,10,15,3867,-2,861,"(24, 13)","(39, 15)",False,Niet gevonden
+16,20000002,Parallel Sweep,100,2.0,0.77,2,SLECHT,OOST,10,15,4386,-1,976,"(42, 12)","(74, 15)",False,Niet gevonden
+17,20000002,Parallel Sweep,100,2.0,0.77,2,SLECHT,OOST,10,15,4386,-1,976,"(42, 12)","(74, 15)",False,Niet gevonden
+18,20000002,Parallel Sweep,100,2.0,0.77,2,SLECHT,ZUID,10,15,4386,-1,976,"(42, 12)","(79, 10)",False,Niet gevonden
+19,20000002,Parallel Sweep,100,2.0,0.77,2,SLECHT,ZUID,10,15,4386,-1,976,"(42, 12)","(79, 10)",False,Niet gevonden
+20,14000003,Parallel Sweep,100,2.0,0.77,1,SLECHT,OOST,8,15,4506,1547,1457,"(16, 14)","(50, 20)",True,557.00
+21,15000003,Parallel Sweep,100,2.0,0.77,2,GOED,OOST,10,15,4756,1000,1252,"(15, 11)","(46, 14)",True,352.00
+22,16000003,Parallel Sweep,100,2.0,0.41,1,GOED,OOST,8,15,3542,2354,1188,"(26, 12)","(44, 17)",True,288.00
+23,17000003,Parallel Sweep,100,2.0,0.77,2,SLECHT,OOST,8,15,2735,0,913,"(32, 5)","(64, 6)",False,Niet gevonden
+24,18000003,Parallel Sweep,100,2.0,0.77,1,SLECHT,OOST,10,15,4115,0,1373,"(19, 13)","(54, 19)",False,Niet gevonden
+25,19000003,Parallel Sweep,100,2.0,0.41,2,SLECHT,OOST,10,15,3657,-1,814,"(25, 8)","(40, 10)",False,Niet gevonden
+26,20000003,Parallel Sweep,100,2.0,0.77,2,SLECHT,OOST,10,15,4099,0,912,"(37, 10)","(69, 13)",False,Niet gevonden
+27,20000003,Parallel Sweep,100,2.0,0.77,2,SLECHT,OOST,10,15,4099,0,912,"(37, 10)","(69, 13)",False,Niet gevonden
+28,20000003,Parallel Sweep,100,2.0,0.77,2,SLECHT,ZUID,10,15,4099,0,912,"(37, 10)","(73, 8)",False,Niet gevonden
+29,20000003,Parallel Sweep,100,2.0,0.77,2,SLECHT,ZUID,10,15,4099,0,912,"(37, 10)","(73, 8)",False,Niet gevonden
